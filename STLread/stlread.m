@@ -11,8 +11,6 @@ function varargout = stlread(file)
 %    The faces and vertices are arranged in the format used by the PATCH plot
 %    object.
 
-% Copyright 2011 The MathWorks, Inc.
-
     if ~exist(file,'file')
         error(['File ''%s'' not found. If the file is not on MATLAB''s path' ...
                ', be sure to specify the full path to the file.'], file);
