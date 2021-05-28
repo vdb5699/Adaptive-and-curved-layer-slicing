@@ -30,8 +30,8 @@ classdef main_free_form
             resc = 30;
             resr = 30;
             
-            Points(res,res,height(Bx),3,1,Bx,By,Bz);
-            Points(resc,resr,height(Bx),3,2,Bx,By,Bz);
+            Points(res,res,1,Bx,By,Bz);
+            Points(resc,resr,2,Bx,By,Bz);
             
             figure(3);
             mesh(Bx,By,Bz);

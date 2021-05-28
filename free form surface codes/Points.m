@@ -15,35 +15,32 @@ classdef Points
        Bx;
        By;
        Bz;
-       
-       NMm;
    end
    
-   properties (Access = public)
+   properties(Access = public)
        Px;
        Py;
        Pz;
+       NMm;
    end
     
    methods (Access = public)
-       function obj = Points(pointsRes,nOfCP,height,width,type,Bx,By,Bz)
+       function obj = Points(pointsRes,nOfCP,type,Bx,By,Bz)
           obj.type = type;
-          
-          obj.n = height;
-          obj.m = width;
+          obj.n = height(Bx);
+          obj.m = size(Bx,2);
           obj.Bx = Bx;
           obj.By = By;
           obj.Bz = Bz;
-          obj.NMm = NMmat(width,height);
-          obj.Px = zeros(height);
-          obj.Py = zeros(height);
-          obj.Pz = zeros(height);
+          obj.NMm = NMmat(size(Bx,2),height(Bx));
+          obj.Px = zeros(height(Bx),size(Bx,2));
+          obj.Py = zeros(height(Bx),size(Bx,2));
+          obj.Pz = zeros(height(Bx),size(Bx,2));
           if type == 1
               obj.pointsD = pointsRes;
               obj.pointsC = 0;
               obj.nOfCP = 0;
               createCoordinate(obj,obj.pointsD,obj.pointsD);
-              
           else
               obj.pointsD = 0;
               obj.pointsC = pointsRes;
@@ -93,6 +90,5 @@ classdef Points
             end
                 
        end
-   end
-       
+   end       
 end

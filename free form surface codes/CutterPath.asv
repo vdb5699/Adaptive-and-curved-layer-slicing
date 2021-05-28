@@ -1,12 +1,22 @@
 classdef CutterPath
 %% properties
-   properties (Access = public)      
+   properties (Access = public)
+       N {mustBeNumeric};
+       M {mustBeNumeric};
+       U {mustBeNumeric};
+       W {mustBeNumeric};
+       
        Bx {mustBeNumeric};
        By {mustBeNumeric};
        Bz {mustBeNumeric};
        
+       res {mustBeNumeric};
        resc {mustBeNumeric};
        resr {mustBeNumeric};
+       
+       Px {mustBeNumeric};
+       Py {mustBeNumeric};
+       Pz {mustBeNumeric};
        
        data;
    end
@@ -22,15 +32,17 @@ classdef CutterPath
             
            if height(Bx) ~= height(By) || height(Bx) ~= height(Bz) || height(By) ~= height(Bz)
               %put erroe msg
-           end 
+           end
+           
            obj.data = calculatePoints(obj);
        end
    end
    %% calculate Px,Py,Pz
    methods (Access = private)
        function data = calculatePoints(obj)
+            
             data = Points(obj.resc,obj.resr,2,obj.Bx,obj.By,obj.Bz);
-            return;
+            return
        end
    end
 end
