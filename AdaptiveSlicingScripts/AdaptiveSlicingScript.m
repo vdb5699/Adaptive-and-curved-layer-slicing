@@ -1,4 +1,4 @@
-function [file, increments] = adaptiveSlicing(file, increments)
+function [file, increments, thicknessArray, angleArray] = adaptiveSlicing(file, increments, thicknessArray, angleArray)
 %% Parse file
 % n_elements = xlsread('SimpleShape.xlsx',1,'A2');
 % n_nodes = xlsread('SimpleShape.xlsx',1,'B2');
@@ -51,7 +51,7 @@ saveas(figure(1), 'model2', 'bmp');
 
 model = Model(n_elements, n_nodes, pointArray, triangleArray);
 
-slicedModel = AdaptiveSlicing(model, increments);
+slicedModel = AdaptiveSlicing(model, increments, thicknessArray, angleArray);
 slicedModel.plotLayers(2);
 
 final = figure(4);

@@ -59,7 +59,7 @@ classdef HelperMethods
         end
         
         function r = GetRecommendedThickness(elementAngle, thicknessArray, angleArray)
-            
+            angleArray = cell2mat(angleArray);
             if(elementAngle >=angleArray(5) && elementAngle < angleArray(4))
                 r = thicknessArray(4);
                 return; 

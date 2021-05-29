@@ -4,14 +4,16 @@ classdef AdaptiveSlicing
         slicedLayers %%An array of adaptively sliced layers
         thicknessArray
         angleArray
+        increments
     end
     
     methods
         
-        function r = AdaptiveSlicing(model, thicknessArray, angleArray)
-            r.slicedLayers = r.SliceModel(model, thicknessArray, angleArray);
+        function r = AdaptiveSlicing(model, increments, thicknessArray, angleArray)
+            r.slicedLayers = r.SliceModel(model, increments, thicknessArray, angleArray);
             r.thicknessArray = thicknessArray;
             r.angleArray = angleArray;
+            r.increments = increments;
         end
         
         function r = getRecommendedSliceThickness(obj,triangleArray, currentHeight, thicknessIndex, thicknessArray, angleArray)
@@ -151,18 +153,28 @@ classdef AdaptiveSlicing
          
         end
         
-        function plotLayers(obj,figureNumber)
+        function plotLayers(obj,figureNumber) 
+            figure(2)
+            view(3)
+            for(i = 1: height(obj.slicedLayers))
+                toPlot = obj.slicedLayers(i);
+                hold on
+                toPlot.plot3Layer();
+            end
+            saveas (figure(2), 'slicing2', 'bmp');
             
-            figure(figureNumber)
+            figure(3)
             view(3)
             for(i = 1: height(obj.slicedLayers))
                 toPlot = obj.slicedLayers(i);
                 hold on
                 toPlot.fill3Layer();
             end
+            saveas (figure(3), 'structure2', 'bmp');
+            
         end
         
-        function r = SliceModel(obj, model, thicknessArray, angleArray)
+        function r = SliceModel(obj, model, increments, thicknessArray, angleArray)
             
             %%Initialise variables
             currentHeight = 0;
@@ -171,8 +183,11 @@ classdef AdaptiveSlicing
             newModel = model;
             pointArray = newModel.nodeArray;
             thicknessIndex = 4;
-            thicknessArr = thicknessArray;
+            % temp, bugfix 
+            % thicknessArr = thicknessArray;
+            thicknessArr = [1;0.5;0.2;0.1];
             angleArr = angleArray;
+            
             triangleArray = newModel.triangularElementArray;
             for i=1:model.nodesNumber
                 if pointArray(i).z >= zMax
@@ -190,7 +205,7 @@ classdef AdaptiveSlicing
                 if(newLayer.topLayerPoints(1).id ~= -1)
                     printLayers = [printLayers; newLayer];
                 end
-                currentHeight = round((currentHeight + currentSliceThickness)*100)/100;
+                currentHeight = round((currentHeight + currentSliceThickness* increments)*100)/100;
                 if(currentSliceThickness == 1)
                     thicknessIndex = 1;
                 elseif(currentSliceThickness == 0.5)
