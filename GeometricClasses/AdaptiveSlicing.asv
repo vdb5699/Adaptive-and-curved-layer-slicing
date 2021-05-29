@@ -3,18 +3,16 @@ classdef AdaptiveSlicing
     properties
         slicedLayers %%An array of adaptively sliced layers
         thicknessArray
-        angleArray
     end
     
     methods
         
-        function r = AdaptiveSlicing(model, thicknessArray, angleArray)
-            r.slicedLayers = r.SliceModel(model, thicknessArray, angleArray);
+        function r = AdaptiveSlicing(model, thicknessArray)
+            r.slicedLayers = r.SliceModel(model, thicknessArray);
             r.thicknessArray = thicknessArray;
-            r.angleArray = angleArray;
         end
         
-        function r = getRecommendedSliceThickness(obj,triangleArray, currentHeight, thicknessIndex, thicknessArray, angleArray)
+        function r = getRecommendedSliceThickness(obj,triangleArray, currentHeight, thicknessIndex, thicknessArray)
             
             %% 1. Determine maximum thickness based on the residual height of the intersected triangles
             %% Find the triangles intersected by the current height
@@ -72,7 +70,7 @@ classdef AdaptiveSlicing
                     
                     currentTriangle = intersectedTri(j);
                     %%Check the recommended thickness
-                    rec = HelperMethods.GetRecommendedThickness(currentTriangle.angle, thicknessArray, angleArray);
+                    rec = HelperMethods.GetRecommendedThickness(currentTriangle.angle);
                     %%set the minimum thickness
                     if(minThickness > rec)
                         minThickness = rec;
@@ -162,7 +160,7 @@ classdef AdaptiveSlicing
             end
         end
         
-        function r = SliceModel(obj, model, thicknessArray, angleArray)
+        function r = SliceModel(obj, model, thicknessArray)
             
             %%Initialise variables
             currentHeight = 0;
@@ -171,8 +169,7 @@ classdef AdaptiveSlicing
             newModel = model;
             pointArray = newModel.nodeArray;
             thicknessIndex = 4;
-            thicknessArr = thicknessArray;
-            angleArr = angleArray;
+            thicknessArr = [1;0.5;0.2;0.1];
             triangleArray = newModel.triangularElementArray;
             for i=1:model.nodesNumber
                 if pointArray(i).z >= zMax
@@ -183,7 +180,7 @@ classdef AdaptiveSlicing
             %%Create layers
             while (currentHeight < zMax)
                 %%Get the adaptive slice thickness
-                currentSliceThickness = obj.getRecommendedSliceThickness(triangleArray, currentHeight, thicknessIndex, thicknessArr, angleArr);
+                currentSliceThickness = obj.getRecommendedSliceThickness(triangleArray, currentHeight, thicknessIndex, thicknessArray);
                 %%Get the layer from the slice
                 newLayer = obj.getLayer(triangleArray, currentHeight, currentSliceThickness, zMax);
                 %%Update all values
