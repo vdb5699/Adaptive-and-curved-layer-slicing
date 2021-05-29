@@ -11,6 +11,7 @@ classdef PrintLayer
         %%intersection points of the layer's bottom surface with the model
         
         layerWidth %%The width of the layer. The distance between the top and bottom points 
+   
     end
     
     methods
@@ -31,7 +32,6 @@ classdef PrintLayer
         end
         
         function r = fill3Layer(obj)
-            
             %%Top layer
             for i = 1 : height(obj.topLayerPoints)
                 XPU(i) =obj.topLayerPoints(i,1).x;
@@ -65,15 +65,54 @@ classdef PrintLayer
                 ZPA(C) = obj.topLayerPoints(i+1,1).z;
             end
             
-            fill3(XPB,YPB,ZPB, 'g')
+            fill3(XPB,YPB,ZPB, 'y')
             hold on
-            fill3(XPU,YPU,ZPU, 'g')
+            fill3(XPU,YPU,ZPU, 'y')
             hold on
             
-            for(i = 1:height(obj.topLayerPoints)-1)
-                patch(XPA((4*i)-3:(4*i)),YPA((4*i)-3:(4*i)),ZPA((4*i)-3:(4*i)), 'g')
-                hold on
+%             for(i = 1:height(obj.topLayerPoints)-1)
+%                 patch(XPA((4*i)-3:(4*i)),YPA((4*i)-3:(4*i)),ZPA((4*i)-3:(4*i)), 'r')
+%                 hold on
+%             end
+        end
+        
+        function r = plot3Layer(obj)
+            %%Top layer
+            for i = 1 : height(obj.topLayerPoints)
+                XPU(i) =obj.topLayerPoints(i,1).x;
+                YPU(i) =obj.topLayerPoints(i,1).y;
+                ZPU(i) = obj.topLayerPoints(i,1).z;
             end
+            %%Bottom layer
+            for i = 1 : height(obj.bottomLayerPoints)
+                XPB(i) = obj.bottomLayerPoints(i,1).x;
+                YPB(i) = obj.bottomLayerPoints(i,1).y;
+                ZPB(i) = obj.bottomLayerPoints(i,1).z;
+            end
+            %%Alternating
+            C = 0;
+            for i = 1 : height(obj.topLayerPoints)-1
+                C = C+1;
+                XPA(C) = obj.topLayerPoints(i,1).x;
+                YPA(C) = obj.topLayerPoints(i,1).y;
+                ZPA(C) = obj.topLayerPoints(i,1).z;
+                C = C+1;
+                XPA(C) = obj.bottomLayerPoints(i,1).x;
+                YPA(C) = obj.bottomLayerPoints(i,1).y;
+                ZPA(C) = obj.bottomLayerPoints(i,1).z;
+                C = C+1;
+                XPA(C) = obj.bottomLayerPoints(i+1,1).x;
+                YPA(C) = obj.bottomLayerPoints(i+1,1).y;
+                ZPA(C) = obj.bottomLayerPoints(i+1,1).z;
+                C = C+1;
+                XPA(C) = obj.topLayerPoints(i+1,1).x;
+                YPA(C) = obj.topLayerPoints(i+1,1).y;
+                ZPA(C) = obj.topLayerPoints(i+1,1).z;
+            end
+            figure(2);
+            plot3(XPU,YPU,ZPU,'-r*', 'LineWidth', 0.2);
+            hold on;
+
         end
     end
     methods(Static)
@@ -123,6 +162,7 @@ classdef PrintLayer
             %%Sort the points by ID
             [~,ind] = sort([PA.id]);
             sortedPoints = PA(ind); 
+
             
             %%Check each ID for double points and remove if necessary
             toRemove = [];
@@ -131,6 +171,7 @@ classdef PrintLayer
                     toRemove = [toRemove;(2*i)-1;(2*i)];
                 end
             end
+
             %%Check if all points will be removed
             if(height(toRemove) == width(sortedPoints))
                 r = sortedPoints(1);
