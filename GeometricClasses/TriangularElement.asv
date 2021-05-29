@@ -106,9 +106,8 @@ classdef TriangularElement
             %%Calculate t  
             t = ((N1*(p1x - px))+(N2*(p1y - py))+(N3*(p1z - pz)))/N3
             x = px; 
-            y = py;
-            z = pz + t;
-            r = Point(x,y,z);
+            y = py
+            
         end
         
         
