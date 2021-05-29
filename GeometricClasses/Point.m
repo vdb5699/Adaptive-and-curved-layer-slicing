@@ -27,6 +27,18 @@ classdef Point
              
          end
          
+         function r = isHigher(this, point)
+             
+            if(this.z > point.z)
+                r = true;
+                return
+            else
+                r = false;
+                return
+            end
+             
+         end
+         
          
     end
 end
