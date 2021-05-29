@@ -41,8 +41,8 @@ for n = 1: n_elements
 end
 
 model = Model(n_elements, n_nodes, pointArray, triangleArray);
-P = STL2Points(model,10,10);
+P = STL2Points(model,5,5);
 Bx = P.Bx;
 By = P.By;
 Bz = P.Bz;
-B = BezierSurface(Bx,By,Bz,30);
+C = CutterPath(Bx,By,Bz,30,30);
