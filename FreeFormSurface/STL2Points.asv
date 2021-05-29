@@ -42,11 +42,9 @@ classdef STL2Points
             obj.points = findPoints(obj,cutX,cutY,obj.minmaxArray);
             array1 = getZ(obj,obj.points);
             array = separate(obj,array1);
-            num = width(array)/3;
-            num = round(num);
-            obj.Bx = array(:,1:num);
-            obj.By = array(:,num+1:(2*num));
-            obj.Bz = array(:,((2*num)+1:(3*num)));
+            obj.Bx = array(1);
+            obj.By = array(2);
+            obj.Bz = array(3);
         end
         
     end
@@ -132,44 +130,53 @@ classdef STL2Points
             return
         end
         
-        %% Separate x, y, z coordinates
-        function array = separate(obj, arrayXYZ)
-           for  row = 1:height(arrayXYZ)
-               for col = 1:width(arrayXYZ)
-                   cell = arrayXYZ(row,col);
+        %% Separate x and y coordinates
+        function array = separate(obj, arrayXY)
+            array1 = zeros(size(arrayXY));
+            array2 = zeros(size(arrayXY));
+            array3 = zeros(size(arrayXY));
+           for  row = 1:height(arrayXY)
+               for col = 1:size(arrayXY,2)
+                   cell = arrayXY(row,col);
                    array1(row,col) = cell.x;
                    array2(row,col) = cell.y;
                    array3(row,col) = cell.z;
                end
            end
-           array = [array1 array2 array3];
-           return
+           array = [array1 array2];
         end
         %% get Z coordinate for each point
         function array = getZ(obj, arrayXY)
             arraytemp = arrayXY;
             for row = 1:height(arrayXY)
-                for col = 1:width(arrayXY)
-                    tempA = [];
+                for col = 1:size(arrayXY,2)
+                    found = [];
+                    numF = 1;
+                    temp = [];
                     for index = 1:size(obj.Tarray)
                         triangle = obj.Tarray(index);
                         if triangle.isXYPointIntersect(arrayXY(row,col)) == 1
-                            p1 = arrayXY(row,col);
-                            p = triangle.getPointIntersect(p1);
-                            tempA = [tempA p];
+                            tempA = [tempA triangle.getPointIntersect(arrayXY(row,col))];
                         end
                     end
                     
-                    if width(tempA) > 1
-                       [~,hi] = sort([tempA.z]);
-                       arraytemp(row,col) = tempA(hi(width(hi)));
-                    elseif width(tempA) == 1
-                       arraytemp(row,col) = tempA(1); 
+                    if size(tempA) > 1
+                       hi = sort([point.z]);
+                       arraytemp(row,col) = hi(size(hi));
+                    else if size
                     end
                 end
             end
-            array = arraytemp;
+            array = arrayXY;
             return
         end
     end
+    
+    methods (Static)
+        
+        function Bigsize(array)
+           zmax = -Inf;
+           for i = size(array) 
+            
+        end
 end    

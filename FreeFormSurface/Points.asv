@@ -79,10 +79,7 @@ classdef Points
                 zlabel('Z-Axis');
                 
                 figure(7);
-                mesh(obj.Bx,obj.By,obj.Bz);
-                xlabel('X-Axis');
-                ylabel('Y-Axis');
-                zlabel('Z-Axis');
+                mesh(
             else
                 figure (6);
 
