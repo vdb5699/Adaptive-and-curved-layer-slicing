@@ -67,10 +67,10 @@ classdef Layers
    end
    %% Calculate Magnitude of Vectors
    methods (Access = public)
-       function double = vectorMag(v)      %takes input vector as parameter
+       function mag = vectorMag(v)      %takes input vector as parameter
            vSquared = v.* v;      
-           dotProd = sum(vSquared)      % sum of square
-           mag = sqrt(dotProd)          % magnitude
+           dotProd = sum(vSquared);     % sum of square
+           mag = sqrt(dotProd);        % magnitude
        end
    end
 
