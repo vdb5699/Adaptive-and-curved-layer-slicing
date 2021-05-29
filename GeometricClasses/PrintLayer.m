@@ -74,12 +74,13 @@ classdef PrintLayer
                 patch(XPA((4*i)-3:(4*i)),YPA((4*i)-3:(4*i)),ZPA((4*i)-3:(4*i)), 'g')
                 hold on
             end
-        end   
+        end
     end
     methods(Static)
         function r = sortLayerVertices(layerPointArray)
             
             LPA = layerPointArray';
+            LPA = PrintLayer.removeDuplicatePoints(LPA);
             %%Add the first point to the array
             orderedArray(1) = LPA(1);
             LPA(1) = [];
@@ -96,12 +97,14 @@ classdef PrintLayer
                         break;
                     end
                 end
+                
                 if(width(LPA) > 0)
-                    %%Find the matching point
-                    for(i = 1 : width(LPA))
+                    %%Find the matching points
+                    for i = 1: width(LPA)
+                        %%Collect all identical points
                         currentPoint = LPA(i);
                         if(currentPoint.isEqual(orderedArray(width(orderedArray))))
-                            %%Add the current point to the ordered array
+                            %%Add the current point to the list
                             orderedArray(width(orderedArray)+1) = currentPoint;
                             LPA(i) = [];
                             break;
@@ -109,8 +112,35 @@ classdef PrintLayer
                     end
                 end
             end
-            
             r = orderedArray;
         end
-    end    
+        
+        
+        
+        function r = removeDuplicatePoints(pointArray)
+            
+            PA = pointArray;
+            %%Sort the points by ID
+            [~,ind] = sort([PA.id]);
+            sortedPoints = PA(ind); 
+            
+            %%Check each ID for double points and remove if necessary
+            toRemove = [];
+            for(i = 1:width(sortedPoints)/2)
+                if(sortedPoints((2*i)-1).isEqual(sortedPoints(2*i)))
+                    toRemove = [toRemove;(2*i)-1;(2*i)];
+                end
+            end
+            %%Check if all points will be removed
+            if(height(toRemove) == width(sortedPoints))
+                r = sortedPoints(1);
+                return;
+            end
+            %%Remove points and return 
+            sortedPoints(toRemove) = [];
+            
+            r = sortedPoints;
+            return;
+        end
+    end
 end

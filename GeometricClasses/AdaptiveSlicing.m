@@ -17,7 +17,7 @@ classdef AdaptiveSlicing
             intersectedTri = [];
             for i = 1 : height(triangleArray)
                 currentTriangle = triangleArray(i);
-                if(currentTriangle.isIntersected(currentHeight,0))
+                if(currentTriangle.isIntersected(currentHeight))
                     intersectedTri = [intersectedTri; currentTriangle];
                 end
             end
@@ -57,7 +57,7 @@ classdef AdaptiveSlicing
                 intersectedTri = [];
                 for i = 1 : height(triangleArray)
                     currentTriangle = triangleArray(i);
-                    if(currentTriangle.isIntersected(checkHeight,0))
+                    if(currentTriangle.isIntersected(checkHeight))
                         intersectedTri = [intersectedTri; currentTriangle];
                     end
                 end
@@ -101,7 +101,7 @@ classdef AdaptiveSlicing
                 intersectedTri = [];
                 for i = 1 : height(triangleArray)
                     currentTriangle = triangleArray(i);
-                    if(currentTriangle.isIntersected(sliceHeight, 1))
+                    if(currentTriangle.isIntersected(sliceHeight))
                         intersectedTri = [intersectedTri; currentTriangle];
                     end
                 end
@@ -110,7 +110,7 @@ classdef AdaptiveSlicing
                 intersectedTri = [];
                 for i = 1 : height(triangleArray)
                     currentTriangle = triangleArray(i);
-                    if(currentTriangle.isIntersected(sliceHeight, 0))
+                    if(currentTriangle.isIntersected(sliceHeight))
                         intersectedTri = [intersectedTri; currentTriangle];
                     end
                 end

@@ -18,7 +18,7 @@ classdef TriangularElement
     end
     methods
        
-        function r = isIntersected(obj, zp, includeTop) 
+        function r = isIntersected(obj, zp) 
             
             z1 = round(obj.point1.z*10000)/10000;
             z2 = round(obj.point2.z*10000)/10000;
@@ -32,29 +32,7 @@ classdef TriangularElement
                 r = false;
                 return;
             end
-            if(includeTop == 1)
-                %%Find top and bottom point
-                maxHeight = -Inf;
-                
-                if(z1 > maxHeight)
-                    maxHeight = z1;
-                    maxPoint = obj.point1;
-                end
-                if(z2 > maxHeight)
-                    maxHeight = z2;
-                    maxPoint = obj.point2;
-                end
-                if(z3 > maxHeight)
-                    maxHeight = z3;
-                    maxPoint = obj.point3;
-                end
-                %%The slice height is at the top or bottom vertex the triangle is
-                %%not intersected
-                if(maxHeight == zp)
-                    r = false;
-                    return;
-                end
-            end
+        
             r = true;
             return;
         end
