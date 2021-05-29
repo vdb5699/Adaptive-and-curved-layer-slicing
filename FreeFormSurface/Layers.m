@@ -4,6 +4,7 @@ classdef Layers
        By;
        Bz;
        thickness;
+       numOfLayers;
 %        BxRows;
 %        BxCols;
 %        ByRows;
@@ -21,7 +22,8 @@ classdef Layers
            obj.Bx = BezierSurface.Bx;
            obj.By = BezierSurface.By;
            obj.Bz = BezierSurface.Bz;
-           obj.thickness = 0.2;
+           obj.thickness = 0.2;     %Need to get user input here
+           obj.numOfLayers = 20;
         end
     end
     %% Adding 1 to Z value (Easy Way Out)
@@ -31,8 +33,7 @@ classdef Layers
            oneMatrix = ones(BzRows, BzCols);
            obj.Bz = Bz + oneMatrix;
        end
-     end
-           
+     end           
     %% putting x,y,z values together in an array and calculating vectors
    methods (Access = public)
        function obj = LayerCoordinates(Bx, By, Bz)
@@ -66,9 +67,9 @@ classdef Layers
    end
    %% Calculate Magnitude of Vectors
    methods (Access = public)
-       function obj = vectorMag(v)      %takes input vector as parameter
+       function double = vectorMag(v)      %takes input vector as parameter
            vSquared = v.* v;      
-           dotProd = sum(vSquared)      % sum of squares
+           dotProd = sum(vSquared)      % sum of square
            mag = sqrt(dotProd)          % magnitude
        end
    end
