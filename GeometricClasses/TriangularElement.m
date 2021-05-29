@@ -139,6 +139,10 @@ classdef TriangularElement
             %%5. Return the angle between the normal and horizontal vector
             
             r = round(-(acosd((dotV)/(magVh * magVnormal))-90));
+            if isnan(r)
+                r = 1;
+            end
+            
         end
         
        

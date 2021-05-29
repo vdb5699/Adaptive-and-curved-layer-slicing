@@ -2,12 +2,13 @@ classdef AdaptiveSlicing
     
     properties
         slicedLayers %%An array of adaptively sliced layers
+        increments
     end
     
     methods
         
-        function r = AdaptiveSlicing(model)
-            r.slicedLayers = r.SliceModel(model);
+        function r = AdaptiveSlicing(model, increments)
+            r.slicedLayers = r.SliceModel(model, increments);
         end
         
         function r = getRecommendedSliceThickness(obj,triangleArray, currentHeight, thicknessIndex, thicknessArray)
@@ -147,18 +148,28 @@ classdef AdaptiveSlicing
          
         end
         
-        function plotLayers(obj,figureNumber)
+        function plotLayers(obj,figureNumber) 
+            figure(2)
+            view(3)
+            for(i = 1: height(obj.slicedLayers))
+                toPlot = obj.slicedLayers(i);
+                hold on
+                toPlot.plot3Layer();
+            end
+            saveas (figure(2), 'slicing2', 'bmp');
             
-            figure(figureNumber)
+            figure(3)
             view(3)
             for(i = 1: height(obj.slicedLayers))
                 toPlot = obj.slicedLayers(i);
                 hold on
                 toPlot.fill3Layer();
             end
+            saveas (figure(3), 'structure2', 'bmp');
+            
         end
         
-        function r = SliceModel(obj, model)
+        function r = SliceModel(obj, model, increments)
             
             %%Initialise variables
             currentHeight = 0;
@@ -185,7 +196,7 @@ classdef AdaptiveSlicing
                 if(newLayer.topLayerPoints(1).id ~= -1)
                     printLayers = [printLayers; newLayer];
                 end
-                currentHeight = round((currentHeight + currentSliceThickness)*100)/100;
+                currentHeight = round((currentHeight + currentSliceThickness*increments)*100)/100;
                 if(currentSliceThickness == 1)
                     thicknessIndex = 1;
                 elseif(currentSliceThickness == 0.5)

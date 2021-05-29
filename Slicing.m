@@ -12,6 +12,8 @@ Z = data.vertices(:,3);
 
 
 %% Element plotting
+model = figure(1);  
+
 for i = 1:n_elements
     n1 = ncon(i,1);
     n2 = ncon(i,2);
@@ -29,14 +31,14 @@ for i = 1:n_elements
     Q = [y1;y2;y3];
     R = [z1;z2;z3];
 
-    model = figure(1);
-    fill3(P,Q,R,'g')    
     xlabel('X-Axis')
     ylabel('Y-Axis')
     zlabel('Z-Axis')
     hold on;
+    fill3(P,Q,R,'g')  
 end
-    saveas(model, 'model', 'bmp');
+view(3);
+saveas(model, 'model', 'bmp');
 
 
 %% Slicing
@@ -164,16 +166,19 @@ for i=1:NOSTEP-1
     % plot structure
     structure = figure(3)
     %set(structure, 'Visible', 'off');
-    fill3 (XP,YP,ZP, 'r')
+    fill3 (XP,YP,ZP, 'y')
     hold on
     saveas(structure, 'structure', 'bmp');
 end
 
-final = patch(data,'FaceColor',       [0.8 0.8 1.0], ...
+    
+final = figure(4)
+figure('Name', 'Final')
+patch(data,'FaceColor',       [0.8 0.8 1.0], ...
          'EdgeColor',       'none',        ...
          'FaceLighting',    'gouraud',     ...
          'AmbientStrength', 0.15);
-
+saveas(final, 'final', 'bmp');
 % Add a camera light, and tone down the specular highlighting
 camlight('headlight');
 material('dull');
