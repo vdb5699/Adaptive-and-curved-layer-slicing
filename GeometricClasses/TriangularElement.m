@@ -47,6 +47,18 @@ classdef TriangularElement
             %%Get XY Points of the intersect point
             pI = [intersectPoint.x,intersectPoint.y];
             
+            %%check if the int point = any of the point in triangle
+            if pI(1) == p1(1) && pI(2) == p1(2)
+               r = 1;
+               return
+            elseif pI(1) == p2(1) && pI(2) == p2(2)
+                r = 1;
+               return
+            elseif pI(1) == p3(1) && pI(2) == p3(2)
+                r = 1;
+               return
+            end
+            
             %%Create vectors between from the point to the vertices
             v1 = [p1(1) - pI(1); p1(2) - pI(2)];
             v2 = [p2(1) - pI(1); p2(2) - pI(2)];
@@ -66,10 +78,10 @@ classdef TriangularElement
             angle31 = round(acosd(dotV31/(magV3 * magV1)));
             
             if((angle12 + angle23 + angle31) == 360)
-                r = true;
+                r = 1;
                 return;
             else
-                r = false;
+                r = 0;
                 return;
             end
         end
