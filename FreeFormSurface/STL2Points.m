@@ -40,6 +40,10 @@ classdef STL2Points
             obj.ymax = obj.minmaxArray(4);
             
             obj.points = findPoints(obj,cutX,cutY,obj.minmaxArray);
+            
+            array = separate(obj,points);
+            obj.Bx = array(1);
+            obj.By = array(2);
         end
         
     end
@@ -122,10 +126,13 @@ classdef STL2Points
             array1 = zeros(size(arrayXY));
             array2 = zeros(size(arrayXY));
            for  row = 1:height(arrayXY)
-               for col = 1:size(arrayXY,2);
-                    array1(row,col) = arrayXY(
+               for col = 1:size(arrayXY,2)
+                   cell = arrayXY(row,col);
+                   array1(row,col) = cell(1);
+                   array2(row,col) = cell(2);
                end
            end
+           array = [array1 array2];
         end
     end
 end    
