@@ -1,15 +1,18 @@
+function [file, increments] = simpleSlicing(file, increments)
 %% Parameters
 %Extract relevant paramters from excel file
-% test =size(fv.faces)
-% n_element = test(1);
-% n_nodes = n_element * 2;
-% ncon = fv.faces;
-% X= fv.vertices(:,1);
-% Y = fv.vertices(:,2);
-% Z = fv.vertices(:,3);
+data = stlread(file);
+dataSize =size(data.faces);
+n_elements = dataSize(1);
+n_nodes = n_elements * 3;
+ncon = data.faces;
+X= data.vertices(:,1);
+Y = data.vertices(:,2);
+Z = data.vertices(:,3);
+
 
 %% Element plotting
-for i = 1:n_element
+for i = 1:n_elements
     n1 = ncon(i,1);
     n2 = ncon(i,2);
     n3 = ncon(i,3);
@@ -26,35 +29,40 @@ for i = 1:n_element
     Q = [y1;y2;y3];
     R = [z1;z2;z3];
 
-    figure(1)
+    model = figure(1);
     fill3(P,Q,R,'g')    
     xlabel('X-Axis')
     ylabel('Y-Axis')
     zlabel('Z-Axis')
-
     hold on;
 end
+    saveas(model, 'model', 'bmp');
+
 
 %% Slicing
 % find the maximum height
 zmax = 0;
+zmin = Inf;
 for i=1:n_nodes
     if Z(i)>=zmax
       zmax=Z(i);
+    elseif Z(i)<=zmin
+       zmin=Z(i);
     else
     end
 end
 
 % slicing parameters
-INC = 5; % number of slices
+INC = increments; % number of slices
 NOSTEP = zmax/INC;
-zs = 0; % starting height
+zs = zmin; % starting height
 
 % iterate through number of steps
 for i=1:NOSTEP-1
     zs=zs+INC; % increment height
     C=0; % counter
-    for j = 1:n_element % iterate through number of elements
+    
+    for j = 1:n_elements % iterate through number of elements
         n1 = ncon(j,1);
         n2 = ncon(j,2);
         n3 = ncon(j,3);
@@ -147,16 +155,34 @@ for i=1:NOSTEP-1
     end
     
     % plot slicing
-    figure(2)
-    plot3(XP,YP,ZP,'-r*', 'LineWidth', 2);
+    slicing = figure(2)
+    %set(slicing, 'Visible', 'off');
+    plot3(XP,YP,ZP,'-r*', 'LineWidth', 1);
     hold on
+    saveas(slicing, 'slicing', 'bmp');
 
     % plot structure
-    figure(3)
+    structure = figure(3)
+    %set(structure, 'Visible', 'off');
     fill3 (XP,YP,ZP, 'r')
     hold on
-    
+    saveas(structure, 'structure', 'bmp');
 end
 
+final = patch(data,'FaceColor',       [0.8 0.8 1.0], ...
+         'EdgeColor',       'none',        ...
+         'FaceLighting',    'gouraud',     ...
+         'AmbientStrength', 0.15);
+
+% Add a camera light, and tone down the specular highlighting
+camlight('headlight');
+material('dull');
+
+% Fix the axes scaling, and set a nice view angle
+axis('image');
+view([-135 35]);
+
+saveas(final, 'final', 'bmp');
+end
 
         
