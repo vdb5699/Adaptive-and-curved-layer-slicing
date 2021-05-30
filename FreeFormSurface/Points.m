@@ -65,34 +65,35 @@ classdef Points
                      for z = obj.m:-1:1
                          obj.Wmat(obj.m-z+1,1) = (j/p2)^(z-1);
                      end
-                     Px(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.Bx*obj.NMm.Mmatrix'*obj.Wmat;
-                     Py(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.By*obj.NMm.Mmatrix'*obj.Wmat;
-                     Pz(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.Bz*obj.NMm.Mmatrix'*obj.Wmat;
+                     Px1(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.Bx*obj.NMm.Mmatrix'*obj.Wmat;
+                     Py1(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.By*obj.NMm.Mmatrix'*obj.Wmat;
+                     Pz1(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.Bz*obj.NMm.Mmatrix'*obj.Wmat;
                 end
             end
             
             if obj.type == 1
-                figure(1);
-
-                surf(obj.Px,obj.Py,obj.Pz);
-           
+         
+                figure(5);
+                surf(Px1,Py1,Pz1);
+                
                 title('Bezier Surface');
                 grid on;
                 xlabel('X-Axis');
                 ylabel('Y-Axis');
                 zlabel('Z-Axis');
-            else
-                figure (2);
                 
-                figure(2);
-                plot3(obj.Px,obj.Py,obj.Pz);
+            else
+                
+                figure (2);
+
+                plot3(Px1,Py1,Pz1);
                 hold on
                 title('CNC Cutter Paths');
                 xlabel('X-Axis');
                 ylabel('Y-Axis');
                 zlabel('Z-Axis');
             end
-            array = [Px;Py;Pz];
+            array = [Px1;Py1;Pz1];
                 
        end
    end       
