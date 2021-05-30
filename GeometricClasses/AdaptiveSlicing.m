@@ -9,6 +9,21 @@ classdef AdaptiveSlicing
     
     methods
         
+        function r = getLayerPoints(obj,index) 
+            
+             layer = obj.slicedLayers(index);   
+             topPoints = layer.topLayerPoints;
+             bottomPoints = layer.bottomLayerPoints;   
+             %%Get the top an bottom points of the layer 
+             outputArray = [];
+             for i = 1: topPoints
+                 rowPoints = [topPoints(i).x, topPoints(i).y, topPoints(i).z, bottomPoints(i).x] ;
+                 outputArray = [outputArray;rowPoints];
+             end    
+             
+                r = outputArray;
+        end
+        
         function r = AdaptiveSlicing(model, increments, thicknessArray, angleArray)
             r.slicedLayers = r.SliceModel(model, increments, thicknessArray, angleArray);
             r.thicknessArray = thicknessArray;

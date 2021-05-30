@@ -1,4 +1,4 @@
-function [file, increments, thicknessArray, angleArray] = adaptiveSlicing(file, increments, thicknessArray, angleArray)
+function adaptive = adaptiveSlicing(file, increments, thicknessArray, angleArray)
 %% Parse file
 % n_elements = xlsread('SimpleShape.xlsx',1,'A2');
 % n_nodes = xlsread('SimpleShape.xlsx',1,'B2');
@@ -15,13 +15,56 @@ X= data.vertices(:,1);
 Y = data.vertices(:,2);
 Z = data.vertices(:,3);
 
+
+Xmin = Inf;
+Ymin = Inf;
+Zmin = Inf;
+for index = 1:height(X)
+    point1 = X(index);
+    point2 = Y(index);
+    point3 = Z(index);
+    
+    if point1 < Xmin
+        Xmin = point1;
+    end
+    if point2 < Ymin
+        Ymin = point2;
+    end
+    if point3 < Zmin
+        Zmin = point3;
+    end
+end
+
+if Xmin < 0
+    X1(:,1) = X(:,1) + abs(Xmin);
+elseif Xmin > 0
+    X1(:,1) = X(:,1) - abs(Xmin);
+else
+    X1 = X;
+end
+if Ymin < 0
+    Y1(:,1) = Y(:,1) + abs(Ymin);
+elseif Ymin > 0
+    Y1(:,1) = Y(:,1) - abs(Ymin);
+else
+    Y1 = Y;
+end
+if Zmin < 0
+    Z1(:,1) = Z(:,1) + abs(Zmin);
+elseif Zmin > 0
+    Z1(:,1) = Z(:,1) - abs(Zmin);
+else
+    Z1 = Z;
+end
+     
+
 %% Parse data into objects
 
 %%1. Create point objects
 pointArray = [];
 
 for i = 1 : n_nodes
-    newPoint = Point(X(i),Y(i),Z(i));
+    newPoint = Point(X1(i),Y1(i),Z1(i));
     pointArray = [pointArray; newPoint];
 end
 
@@ -52,7 +95,9 @@ saveas(figure(1), 'model2', 'bmp');
 model = Model(n_elements, n_nodes, pointArray, triangleArray);
 
 slicedModel = AdaptiveSlicing(model, increments, thicknessArray, angleArray);
-slicedModel.plotLayers(2);
+adaptive = slicedModel;
+return;
+
 
 final = figure(4);
 patch(data,'FaceColor',       [0.8 0.8 1.0], ...

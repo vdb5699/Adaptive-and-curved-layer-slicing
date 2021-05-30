@@ -168,9 +168,7 @@ classdef PrintLayer
             %%Check each ID for double points and remove if necessary
             toRemove = [];
             for(i = 1:width(sortedPoints)/2)
-                p1 = Point(round(sortedPoints((2*i)-1).x),round(sortedPoints((2*i)-1).y), round(sortedPoints((2*i)-1).z));
-                p2 = Point(round(sortedPoints((2*i)).x),round(sortedPoints((2*i)).y), round(sortedPoints((2*i)).z));
-                if(p1.isEqual(p2))
+                 if(sortedPoints((2*i)-1).isEqual(sortedPoints(2*i)))
                     toRemove = [toRemove;(2*i)-1;(2*i)];
                 end
             end
