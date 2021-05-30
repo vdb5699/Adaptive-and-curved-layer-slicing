@@ -18,6 +18,57 @@ Y = data.vertices(:,2);
 Z = data.vertices(:,3);
 
 
+            Xmin = Inf;
+            Ymin = Inf;
+            Z
+            for index = 1:height(array)
+                point1 = array(index).point1;
+                point2 = array(index).point2;
+                point3 = array(index).point3;
+                
+                if point1.x < Xmin
+                   Xmin = point1.x; 
+                end
+                if point2.x < Xmin
+                    Xmin = point2.x;
+                end
+                if point3.x < Xmin
+                    Xmin = point3.x; 
+                end
+                
+                if point1.x > Xmax
+                   Xmax = point1.x; 
+                end
+                if point2.x > Xmax
+                    Xmax = point2.x;
+                end
+                if point3.x > Xmax
+                    Xmax = point3.x; 
+                end
+                
+                if point1.y < Ymin
+                   Ymin = point1.y; 
+                end
+                if point2.y < Ymin
+                   Ymin = point2.y; 
+                end
+                if point3.y < Ymin
+                   Ymin = point3.y; 
+                end
+                
+                if point1.y > Ymax
+                   Ymax = point1.y; 
+                end
+                if point2.y > Ymax
+                   Ymax = point2.y; 
+                end
+                if point3.y > Ymax
+                   Ymax = point3.y; 
+                end
+            end
+            values = [Xmin Xmax Ymin Ymax];
+
+
 %% Parse data into objects
 
 %%1. Create point objects
@@ -56,10 +107,4 @@ P = STL2Points(model,numberX,numberY); % number of x/y
 Bx = P.Bx;
 By = P.By;
 Bz = P.Bz;
-for row = 1:height(Bz)
-    for col = 1:width(Bz)
-        if isnan(Bz(row,col))
-        end
-    end
-end
 B = BezierSurface(Bx,By,Bz,resolution); % resolution

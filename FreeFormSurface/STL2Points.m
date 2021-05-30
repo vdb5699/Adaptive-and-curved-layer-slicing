@@ -153,13 +153,13 @@ classdef STL2Points
                     tempA = [];
                     for index = 1:size(obj.Tarray)
                         triangle = obj.Tarray(index);
-                        if triangle.isXYPointIntersect(arrayXY(row,col)) == 1
-                            p1 = arrayXY(row,col);
+                        p1 = arrayXY(row,col);
+                        if triangle.isXYPointIntersect(p1) == 1
+                            
                             p = triangle.getPointIntersect(p1);
                             tempA = [tempA p];
                         end
                     end
-                    
                     if width(tempA) > 1
                        [~,hi] = sort([tempA.z]);
                        arraytemp(row,col) = tempA(hi(width(hi)));

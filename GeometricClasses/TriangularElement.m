@@ -38,7 +38,12 @@ classdef TriangularElement
         end
         
         function r = isXYPointIntersect(obj, intersectPoint)
+            angle = TriangularElement.getTriangularElementAngle(obj.point1, obj.point2, obj.point3);
             
+            if angle == 90
+                r = 0;
+                return
+            end
             %%Get XY Points of the triangle
             p1 = [obj.point1.x,obj.point1.y]; 
             p2 = [obj.point2.x,obj.point2.y];
@@ -77,7 +82,8 @@ classdef TriangularElement
             angle23 = round(acosd(dotV23/(magV2 * magV3)));
             angle31 = round(acosd(dotV31/(magV3 * magV1)));
             
-            if((angle12 + angle23 + angle31) == 360)
+            totAngle = angle12 + angle23 + angle31;
+            if(totAngle == 360) || ((totAngle + 1) == 360) || ((totAngle - 1) == 360)
                 r = 1;
                 return;
             else
@@ -94,9 +100,8 @@ classdef TriangularElement
                 arr = [obj.point1, obj.point2, obj.point3];
                 [~,ind] = sort([arr.z]);
                 sortedPoints = arr(ind);
-                r = sortedPoint(width(sortedPoints));
+                r = sortedPoints(width(sortedPoints));
                 return;
-                
             end
             %%Calculate a normal vector to the plane
             %%Get XY Points of the triangle

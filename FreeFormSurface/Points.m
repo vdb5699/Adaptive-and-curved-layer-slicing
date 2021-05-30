@@ -68,24 +68,19 @@ classdef Points
             end
             
             if obj.type == 1
-                figure(5);
+                figure(1);
 
                 surf(obj.Px,obj.Py,obj.Pz);
-                
+           
                 title('Bezier Surface');
                 grid on;
                 xlabel('X-Axis');
                 ylabel('Y-Axis');
                 zlabel('Z-Axis');
-                
-                figure(7);
-                mesh(obj.Bx,obj.By,obj.Bz);
-                xlabel('X-Axis');
-                ylabel('Y-Axis');
-                zlabel('Z-Axis');
             else
-                figure (6);
-
+                figure (2);
+                
+                figure(2);
                 plot3(obj.Px,obj.Py,obj.Pz);
                 hold on
                 title('CNC Cutter Paths');

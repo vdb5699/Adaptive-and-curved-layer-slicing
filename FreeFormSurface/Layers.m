@@ -1,10 +1,15 @@
 classdef Layers
-   properties (Access = private)
+   properties (Access = public)
        Bx;
        By;
        Bz;
        thickness;
        numOfLayers;
+       Px;
+       Py;
+       Pz;
+       
+       
 %        BxRows;
 %        BxCols;
 %        ByRows;
@@ -18,22 +23,39 @@ classdef Layers
    end
    %% constructor
     methods(Access = public)
-        function obj = Layers(Bx,By,Bz, thickness)
-           obj.Bx = BezierSurface.Bx;
-           obj.By = BezierSurface.By;
-           obj.Bz = BezierSurface.Bz;
-           obj.thickness = 0.2;     %Need to get user input here
-           obj.numOfLayers = 20;
+        function obj = Layers(surface, thickness, numOfLayers)
+             points = surface.data;
+            obj.Px = points.Px;
+            obj.Py = points.Py;
+            obj.Pz = points.Pz;
+           obj.thickness = thickness;     %Need to get user input here
+           obj.numOfLayers = numOfLayers;
+           zPlusOne(obj, obj.Px,obj.Py, obj.Pz, obj.thickness);
         end
     end
     %% Adding 1 to Z value (Easy Way Out)
      methods (Access = public)
-       function obj = zPlusOne(Bx, By, Bz)
-           [BzRows,BzCols] = size(Bz);
-           oneMatrix = ones(BzRows, BzCols);
-           obj.Bz = Bz + oneMatrix;
+       function Pz = zPlusOne(obj, Px, Py, Pz, thickness)
+          figure(10);
+          surf(Px,Py,Pz);
+          hold on;
+          title('Bezier Surface');
+          grid on;
+          xlabel('X-Axis');
+          ylabel('Y-Axis');
+          zlabel('Z-Axis');
+          for row = 1:obj.numOfLayers
+              PzTemp = Pz + (thickness * row);
+              surf(Px,Py,PzTemp);
+              
+              
+              %                 [PzRows,PzCols] = size(Pz);
+              %                 oneMatrix = ones(PzRows, PzCols);
+              %                 Pz = Pz + oneMatrix + thickness;
+              %T = table(Bx, By, Bz);
+          end
        end
-     end           
+     end
     %% putting x,y,z values together in an array and calculating vectors
    methods (Access = public)
        function obj = LayerCoordinates(Bx, By, Bz)
@@ -58,9 +80,11 @@ classdef Layers
                    V3crossV2 = cross(V3,V2);
 
                    magnitude = vectorMag(V3);               %Calculating magnitude of V3
-                   V13 = thickness * V1crossV3/magnitude;   %Unit Vector
+                   V13 = obj.thickness * V1crossV3/magnitude;   %Unit Vector
                    magnitude = vectorMag(V3crossV2);        %Calculating magnitude of V3crossV2
-                   V23 = thickness * V3crossV2/magnitude;   %Unit Vector
+                   V23 = obj.thickness * V3crossV2/magnitude;   %Unit Vector
+                   alpha = alphaAngle(V13,V23);
+                   V5 = (obj.thickness/cos(alpha/2))*((V13+V23)/norm(V13+V23));
                end
            end
        end
@@ -68,9 +92,15 @@ classdef Layers
    %% Calculate Magnitude of Vectors
    methods (Access = public)
        function mag = vectorMag(v)      %takes input vector as parameter
-           vSquared = v.* v;      
-           dotProd = sum(vSquared);     % sum of square
-           mag = sqrt(dotProd);        % magnitude
+           dotProd = dot(v,v);          % dot product
+           mag = norm(dotProd);        % magnitude
+       end
+   end
+   %% Calculate Alpha Angle between 2 vectors
+   methods (Access = public)
+       function alphaAngle = vectorAng(v,v2)      %takes input vector v and v2 as parameter
+           radAngle = atan2(norm(cross(v,v2)), dot(v,v2));  %gets the angle between two vectors in rads
+           alphaAngle = rad2deg(radAngle);        %returns the angle in deg
        end
    end
 
