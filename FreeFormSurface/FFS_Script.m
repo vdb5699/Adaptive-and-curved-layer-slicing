@@ -1,11 +1,22 @@
+function [file, numberX, numberY, resolution] = FreeForm(file, numberX, numberY, resolution)
 %% Bezier Surface Script
 %% Parse file
-n_elements = xlsread('SimpleShape.xlsx',1,'A2');
-n_nodes = xlsread('SimpleShape.xlsx',1,'B2');
-ncon = xlsread('SimpleShape.xlsx',1,'C2:E25');
-X = xlsread('SimpleShape.xlsx',1,'F2:F18');
-Y = xlsread('SimpleShape.xlsx',1,'G2:G18');
-Z = xlsread('SimpleShape.xlsx',1,'H2:H18');
+% n_elements = xlsread('SimpleShape.xlsx',1,'A2');
+% n_nodes = xlsread('SimpleShape.xlsx',1,'B2');
+% ncon = xlsread('SimpleShape.xlsx',1,'C2:E25');
+% X = xlsread('SimpleShape.xlsx',1,'F2:F18');
+% Y = xlsread('SimpleShape.xlsx',1,'G2:G18');
+% Z = xlsread('SimpleShape.xlsx',1,'H2:H18');
+
+data = stlread(file);
+dataSize =size(data.faces);
+n_elements = dataSize(1);
+n_nodes = n_elements * 3;
+ncon = data.faces;
+X= data.vertices(:,1);
+Y = data.vertices(:,2);
+Z = data.vertices(:,3);
+
 
 %% Parse data into objects
 
@@ -39,10 +50,10 @@ for n = 1: n_elements
     patch([p1.x;p2.x;p3.x],[p1.y;p2.y;p3.y],[p1.z;p2.z;p3.z],'g');
     hold on
 end
-
+    
 model = Model(n_elements, n_nodes, pointArray, triangleArray);
-P = STL2Points(model,10,10);
+P = STL2Points(model,numberX,numberY); % number of x/y
 Bx = P.Bx;
 By = P.By;
 Bz = P.Bz;
-B = BezierSurface(Bx,By,Bz,30);
+B = BezierSurface(Bx,By,Bz,resolution); % resolution

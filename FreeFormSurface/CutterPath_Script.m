@@ -1,11 +1,22 @@
+function [file, numberX, numberY, numberPoints, numberPaths] = CurvedLayer(file, numberX, numberY, numberPoints, numberPaths)
 %% Bezier Surface Script
 %% Parse file
-n_elements = xlsread('SimpleShape.xlsx',1,'A2');
-n_nodes = xlsread('SimpleShape.xlsx',1,'B2');
-ncon = xlsread('SimpleShape.xlsx',1,'C2:E25');
-X = xlsread('SimpleShape.xlsx',1,'F2:F18');
-Y = xlsread('SimpleShape.xlsx',1,'G2:G18');
-Z = xlsread('SimpleShape.xlsx',1,'H2:H18');
+% n_elements = xlsread('SimpleShape.xlsx',1,'A2');
+% n_nodes = xlsread('SimpleShape.xlsx',1,'B2');
+% ncon = xlsread('SimpleShape.xlsx',1,'C2:E25');
+% X = xlsread('SimpleShape.xlsx',1,'F2:F18');
+% Y = xlsread('SimpleShape.xlsx',1,'G2:G18');   
+% Z = xlsread('SimpleShape.xlsx',1,'H2:H18');
+
+data = stlread(file);
+dataSize =size(data.faces);
+n_elements = dataSize(1);
+n_nodes = n_elements * 3;
+ncon = data.faces;
+X= data.vertices(:,1);
+Y = data.vertices(:,2);
+Z = data.vertices(:,3);
+
 
 %% Parse data into objects
 
@@ -41,8 +52,8 @@ for n = 1: n_elements
 end
 
 model = Model(n_elements, n_nodes, pointArray, triangleArray);
-P = STL2Points(model,5,5);
+P = STL2Points(model,numberX,numberY); % number of x/y
 Bx = P.Bx;
 By = P.By;
 Bz = P.Bz;
-C = CutterPath(Bx,By,Bz,30,30);
+C = CutterPath(Bx,By,Bz,numberPoints,numberPaths); % number of points, number of paths
