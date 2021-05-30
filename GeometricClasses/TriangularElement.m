@@ -131,7 +131,7 @@ classdef TriangularElement
             N3 = crossV(3);
             
             %%Calculate t  
-            t = ((N1*(p1x - px))+(N2*(p1y - py))+(N3*(p1z - pz)))/N3
+            t = ((N1*(p1x - px))+(N2*(p1y - py))+(N3*(p1z - pz)))/N3;
             x = px; 
             y = py;
             z = pz + t;
