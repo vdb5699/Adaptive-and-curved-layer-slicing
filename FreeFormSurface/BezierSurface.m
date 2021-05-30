@@ -16,9 +16,7 @@ classdef BezierSurface
            obj.Bx = Bx;
            obj.By = By;
            obj.Bz = Bz;
-           obj.res = res;
-           
-            
+           obj.res = res; 
            obj.data = calculatePoints(obj);
            obj.Px = obj.data.Px;
            obj.Py = obj.data.Py;

@@ -33,25 +33,29 @@ classdef Points
           obj.By = By;
           obj.Bz = Bz;
           obj.NMm = NMmat(size(Bx,2),height(Bx));
-          obj.Px = zeros(height(Bx),size(Bx,2));
-          obj.Py = zeros(height(Bx),size(Bx,2));
-          obj.Pz = zeros(height(Bx),size(Bx,2));
+
           if type == 1
               obj.pointsD = pointsRes;
               obj.pointsC = 0;
               obj.nOfCP = 0;
-              createCoordinate(obj,obj.pointsD,obj.pointsD);
+              a = createCoordinate(obj,obj.pointsD,obj.pointsD);
+              obj.Px = a(1:height(a)/3,:);
+              obj.Py = a((height(a)/3)+1:(height(a)/3)*2,:);
+              obj.Pz = a((height(a)/3)*2+1:height(a),:);
           else
               obj.pointsD = 0;
               obj.pointsC = pointsRes;
               obj.nOfCP = nOfCP;
-              createCoordinate(obj,obj.pointsC,obj.nOfCP);
+              a = createCoordinate(obj,obj.pointsC,obj.nOfCP);
+              obj.Px = a(1:height(a)/3,:);
+              obj.Py = a((height(a)/3)+1:(height(a)/3)*2,:);
+              obj.Pz = a((height(a)/3)*2+1:height(a),:);
           end
        end
    end
    
    methods (Access = private)
-       function createCoordinate(obj,p,p2)
+       function array = createCoordinate(obj,p,p2)
            
             for i = 0: p
                 for j = 0 : p2
@@ -61,9 +65,9 @@ classdef Points
                      for z = obj.m:-1:1
                          obj.Wmat(obj.m-z+1,1) = (j/p2)^(z-1);
                      end
-                     obj.Px(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.Bx*obj.NMm.Mmatrix'*obj.Wmat;
-                     obj.Py(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.By*obj.NMm.Mmatrix'*obj.Wmat;
-                     obj.Pz(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.Bz*obj.NMm.Mmatrix'*obj.Wmat;
+                     Px(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.Bx*obj.NMm.Mmatrix'*obj.Wmat;
+                     Py(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.By*obj.NMm.Mmatrix'*obj.Wmat;
+                     Pz(i+1,j+1) = obj.Umat*obj.NMm.Nmatrix*obj.Bz*obj.NMm.Mmatrix'*obj.Wmat;
                 end
             end
             
@@ -88,6 +92,7 @@ classdef Points
                 ylabel('Y-Axis');
                 zlabel('Z-Axis');
             end
+            array = [Px;Py;Pz];
                 
        end
    end       
