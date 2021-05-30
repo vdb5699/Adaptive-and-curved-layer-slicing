@@ -31,7 +31,6 @@ classdef Layers
             obj.thickness = thickness;     %Need to get user input here
             obj.numOfLayers = numOfLayers;
             zPlusOne(obj, obj.Px,obj.Py, obj.Pz, obj.thickness);
-            LayerCoor
         end
     end
     %% Adding 1 to Z value (Easy Way Out)
