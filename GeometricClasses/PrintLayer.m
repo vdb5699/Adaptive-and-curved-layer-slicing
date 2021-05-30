@@ -168,7 +168,9 @@ classdef PrintLayer
             %%Check each ID for double points and remove if necessary
             toRemove = [];
             for(i = 1:width(sortedPoints)/2)
-                if(sortedPoints((2*i)-1).isEqual(sortedPoints(2*i)))
+                p1 = Point(round(sortedPoints((2*i)-1).x),round(sortedPoints((2*i)-1).y), round(sortedPoints((2*i)-1).z));
+                p2 = Point(round(sortedPoints((2*i)).x),round(sortedPoints((2*i)).y), round(sortedPoints((2*i)).z));
+                if(p1.isEqual(p2))
                     toRemove = [toRemove;(2*i)-1;(2*i)];
                 end
             end
@@ -190,12 +192,12 @@ classdef PrintLayer
             PA = pointArray;
             %%Sort the points by ID
             [~,ind] = sort([PA.id]);
-            sortedPoints = PA(ind); 
-            
+            sortedArray = PA(ind); 
+            matchArray = [];
             %%Create a matrix of the points by id
             for i = 1:width(sortedArray)/2
-                matchArray(i,1) = sortedArray(((2*i)-1));
-                matchArray(i,2) = sortedArray(2*i);
+                matchRow = [sortedArray((2*i)-1),sortedArray(2*i)];
+                matchArray = [matchArray;matchRow];
             end
             
             %%Iterate throught the matched array and see if there is any
@@ -215,12 +217,11 @@ classdef PrintLayer
             
             %%Remove necessary values
             %%Check if all points will be removed
-            if(height(toRemove) == width(sortedPoints))
-                r = sortedPoints(1);
+            if(height(toRemove) == width(sortedArray))
+                r = sortedArray(1);
                 return;
             end
-                matchArray(toRemove,1:2) = [];
-                
+                matchArray(toRemove,:) = [];
            %%Turn the remaining points into a row vector
           for(i = 1:height(matchArray))
             returnArray((2*i)-1) = matchArray(i,1);
