@@ -47,16 +47,18 @@ classdef TriangularElement
             %%Get XY Points of the intersect point
             pI = [intersectPoint.x,intersectPoint.y];
             
+            %%check if the int point = any of the point in triangle
             if pI(1) == p1(1) && pI(2) == p1(2)
                r = 1;
                return
             elseif pI(1) == p2(1) && pI(2) == p2(2)
                 r = 1;
                return
-            elseif 
+            elseif pI(1) == p3(1) && pI(2) == p3(2)
                 r = 1;
                return
             end
+            
             %%Create vectors between from the point to the vertices
             v1 = [p1(1) - pI(1); p1(2) - pI(2)];
             v2 = [p2(1) - pI(1); p2(2) - pI(2)];
@@ -85,6 +87,13 @@ classdef TriangularElement
         end
         
         function r = getPointIntersect(obj, intersectPoint)
+            %%Check if triangle is vertical 
+            angle = TriangularElement.getTriangularElementAngle(obj.point1, obj.point2, obj.point3);
+            if (angle == 90)
+                %%return point with maximum z
+                
+                
+            end
         
             %%Calculate a normal vector to the plane
             %%Get XY Points of the triangle
@@ -149,6 +158,10 @@ classdef TriangularElement
             %%5. Return the angle between the normal and horizontal vector
             
             r = round(-(acosd((dotV)/(magVh * magVnormal))-90));
+            if isnan(r)
+                r = 1;
+            end
+            
         end
         
        

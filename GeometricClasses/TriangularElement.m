@@ -87,7 +87,17 @@ classdef TriangularElement
         end
         
         function r = getPointIntersect(obj, intersectPoint)
-        
+            %%Check if triangle is vertical
+            angle = TriangularElement.getTriangularElementAngle(obj.point1, obj.point2, obj.point3);
+            if (angle == 90)
+                %%return point with maximum z
+                arr = [obj.point1, obj.point2, obj.point3];
+                [~,ind] = sort([arr.z]);
+                sortedPoints = arr(ind);
+                r = sortedPoint(width(sortedPoints));
+                return;
+                
+            end
             %%Calculate a normal vector to the plane
             %%Get XY Points of the triangle
             p1x = obj.point1.x; 
