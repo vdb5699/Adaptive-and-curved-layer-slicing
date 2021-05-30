@@ -96,7 +96,7 @@ model = Model(n_elements, n_nodes, pointArray, triangleArray);
 
 slicedModel = AdaptiveSlicing(model, increments, thicknessArray, angleArray);
 adaptive = slicedModel;
-return;
+slicedModel.plotLayers(4);
 
 
 final = figure(4);
@@ -110,6 +110,7 @@ material('dull');
 axis('image');
 view([-135 35]);
 saveas(final, 'final2', 'bmp');
+close all
 end
 
 % %% Parse file
