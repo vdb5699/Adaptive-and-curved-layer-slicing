@@ -18,9 +18,11 @@ classdef main_free_form
 %             By = [0 0 0 0;2 2 2 2];
 %             Bz = [0 2 2 0;0 2 2 0];
 
-              Bx = [0 2.5 5; 0 2.5 5; 0 2.5 5; 0 2.5 5; 0 2.5 5];
-              By = [0 0 0 ; 1.25 1.25 1.25; 2.5 2.5 2.5; 3.75 3.75 3.75; 5 5 5];
-              Bz = [0 0 0; 0 5 0; 0 10 0; 0 5 0; 0 0 0];
+            Bx = [0 2.5 5; 0 2.5 5; 0 2.5 5; 0 2.5 5; 0 2.5 5];
+            By = [0 0 0 ; 1.25 1.25 1.25; 2.5 2.5 2.5; 3.75 3.75 3.75; 5 5 5];
+            Bz = [0 0 0; 0 5 0; 0 10 0; 0 5 0; 0 0 0];
+            thickness = 0.2;
+            numOfLayers = 5;
             
             mat = NMmat(4,2);
             N = mat.Nmatrix;
@@ -30,11 +32,15 @@ classdef main_free_form
             resc = 30;
             resr = 30;
             
-            Points(res,res,1,Bx,By,Bz);
-            Points(resc,resr,2,Bx,By,Bz);
-            
+            a = Points(res,res,1,Bx,By,Bz);
+            b = Points(resc,resr,2,Bx,By,Bz);
+             
             figure(3);
             mesh(Bx,By,Bz);
+            bezier = BezierSurface(Bx, By, Bz, res);
+            points = bezier.data;
+            
+            newLayers = Layers(bezier, thickness, numOfLayers);
         end
     end
     

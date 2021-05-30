@@ -5,7 +5,9 @@ classdef BezierSurface
        Bz {mustBeNumeric};
        
        res {mustBeNumeric};
-       
+       Px;
+       Py;
+       Pz;
        data;
     end
     %% constructor
@@ -15,8 +17,12 @@ classdef BezierSurface
            obj.By = By;
            obj.Bz = Bz;
            obj.res = res;
+           
             
            obj.data = calculatePoints(obj);
+           obj.Px = obj.data.Px;
+           obj.Py = obj.data.Py;
+           obj.Pz = obj.data.Pz;
         end
     end
     %% calculate Px,Py,Pz
