@@ -76,14 +76,15 @@ for i = 1 : n_elements
     p1Index = ncon(i,1);
     p2Index = ncon(i,2);
     p3Index = ncon(i,3);
-    
+  
     triangleArray = [triangleArray; TriangularElement(pointArray(p1Index), pointArray(p2Index), pointArray(p3Index))];
+  
 end
 
 %% Plot triangles
 figure(1)
 view(3)
-for n = 1: n_elements
+for n = 1: height(triangleArray)
     p1 = triangleArray(n).point1;
     p2 = triangleArray(n).point2;
     p3 = triangleArray(n).point3;
@@ -95,9 +96,7 @@ saveas(figure(1), 'model2', 'bmp');
 model = Model(n_elements, n_nodes, pointArray, triangleArray);
 
 slicedModel = AdaptiveSlicing(model, increments, thicknessArray, angleArray);
-adaptive = slicedModel;
-return;
-
+slicedModel.plotLayers(2);
 
 final = figure(4);
 patch(data,'FaceColor',       [0.8 0.8 1.0], ...
