@@ -157,14 +157,14 @@ for i=1:NOSTEP-1
     end
     
     % plot slicing
-    slicing = figure(2)
+    slicing = figure(2);
     %set(slicing, 'Visible', 'off');
     plot3(XP,YP,ZP,'-r*', 'LineWidth', 1);
     hold on
     saveas(slicing, 'slicing', 'bmp');
 
     % plot structure
-    structure = figure(3)
+    structure = figure(3);
     %set(structure, 'Visible', 'off');
     fill3 (XP,YP,ZP, 'y')
     hold on
@@ -172,22 +172,22 @@ for i=1:NOSTEP-1
 end
 
     
-final = figure(4)
-figure('Name', 'Final')
-patch(data,'FaceColor',       [0.8 0.8 1.0], ...
-         'EdgeColor',       'none',        ...
-         'FaceLighting',    'gouraud',     ...
-         'AmbientStrength', 0.15);
-saveas(final, 'final', 'bmp');
-% Add a camera light, and tone down the specular highlighting
-camlight('headlight');
-material('dull');
-
-% Fix the axes scaling, and set a nice view angle
-axis('image');
-view([-135 35]);
-
-saveas(final, 'final', 'bmp');
+% final = figure(4);
+% figure('Name', 'Final')
+% patch(data,'FaceColor',       [0.8 0.8 1.0], ...
+%          'EdgeColor',       'none',        ...
+%          'FaceLighting',    'gouraud',     ...
+%          'AmbientStrength', 0.15);
+% saveas(final, 'final', 'bmp');
+% % Add a camera light, and tone down the specular highlighting
+% camlight('headlight');
+% material('dull');
+% 
+% % Fix the axes scaling, and set a nice view angle
+% axis('image');
+% view([-135 35]);
+% 
+% saveas(final, 'final', 'bmp');
 end
 
         

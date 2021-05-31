@@ -107,6 +107,7 @@ classdef PrintLayer
             figure(2);
             plot3(XPU,YPU,ZPU,'-r*', 'LineWidth', 0.2);
             hold on;
+          
 
         end
     end

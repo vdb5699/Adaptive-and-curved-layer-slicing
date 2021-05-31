@@ -16,8 +16,8 @@ classdef AdaptiveSlicing
              bottomPoints = layer.bottomLayerPoints;   
              %%Get the top an bottom points of the layer 
              outputArray = [];
-             for i = 1: topPoints
-                 rowPoints = [topPoints(i).x, topPoints(i).y, topPoints(i).z, bottomPoints(i).x] ;
+             for i = 1: length(topPoints)
+                 rowPoints = [topPoints(i).x, topPoints(i).y, topPoints(i).z, bottomPoints(i).x, bottomPoints(i).y, bottomPoints(i).z] ;
                  outputArray = [outputArray;rowPoints];
              end    
              
@@ -80,7 +80,7 @@ classdef AdaptiveSlicing
             
             %%2. Determine the maximum thickness based on the minimum angle of the intersected elements
             
-            for count = thicknessIndex:height(thicknessArray)
+            for count = thicknessIndex:width(thicknessArray)
                 
                 %%Find all triangles intersected by the current slice height
                 checkHeight = currentHeight + thicknessArray(count);
@@ -208,9 +208,7 @@ classdef AdaptiveSlicing
             newModel = model;
             pointArray = newModel.nodeArray;
             thicknessIndex = 4;
-            % temp, bugfix 
-            % thicknessArr = thicknessArray;
-            thicknessArr = [1;0.5;0.2;0.1];
+            thicknessArr = cell2mat(thicknessArray);
             angleArr = angleArray;
             
             triangleArray = newModel.triangularElementArray;

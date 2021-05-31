@@ -95,8 +95,11 @@ for n = 1: n_elements
 end
     
 model = Model(n_elements, n_nodes, pointArray, triangleArray);
+%% calcualte Bx,By,Bz based on model and number of points in x/y axis
 P = STL2Points(model,numberX,numberY); % number of x/y
 Bx = P.Bx;
 By = P.By;
 Bz = P.Bz;
+%% create Bezier surface and display it
 B = BezierSurface(Bx,By,Bz,resolution); % resolution
+Layer = Layers(B,2,10,1);

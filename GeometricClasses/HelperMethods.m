@@ -60,17 +60,17 @@ classdef HelperMethods
         
         function r = GetRecommendedThickness(elementAngle, thicknessArray, angleArray)
             angleArray = cell2mat(angleArray);
-            if(elementAngle >=angleArray(5) && elementAngle < angleArray(4))
-                r = thicknessArray(4);
+            if(elementAngle >=angleArray(1) && elementAngle < angleArray(2))
+                r = thicknessArray(2);
                 return; 
-            elseif(elementAngle >=angleArray(4) && elementAngle < angleArray(3))    
+            elseif(elementAngle >=angleArray(2) && elementAngle < angleArray(3))    
                 r = thicknessArray(3);
                 return;
-            elseif(elementAngle >=angleArray(3) && elementAngle < angleArray(2))
-                r = thicknessArray(2);
+            elseif(elementAngle >=angleArray(3) && elementAngle < angleArray(4))
+                r = thicknessArray(4);
                 return;
-            elseif(elementAngle >=angleArray(2) && elementAngle <= angleArray(1))    
-                r = thicknessArray(1);
+            elseif(elementAngle >=angleArray(4) && elementAngle <= angleArray(5))    
+                r = thicknessArray(5);
                 return;
             else
                 r = -1;
@@ -80,17 +80,18 @@ classdef HelperMethods
         
         function r = GetResidualLayerThickness(minimumResidual)
             
+            % values temporary changed so angle has more influence
              if(minimumResidual >=0 && minimumResidual < 0.2)
-                r = 0.1;
+                r = 1; %0.1
                 return; 
             elseif(minimumResidual >=0.2 && minimumResidual < 0.5)    
-                r = 0.2;
+                r = 2; %0.2
                 return;
             elseif(minimumResidual >=0.5 && minimumResidual < 1)
-                r = 0.5;
+                r = 5; %0.5
                 return;
             elseif(minimumResidual >= 1 && minimumResidual <= Inf)    
-                r = 1;
+                r = 10; %1
                 return;
             else
                 r = -1;

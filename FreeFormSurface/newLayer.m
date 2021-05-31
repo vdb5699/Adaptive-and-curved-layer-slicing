@@ -1,4 +1,4 @@
-classdef Layers
+classdef newLayer
     properties (Access = public)
         Bx;
         By;
@@ -196,4 +196,5 @@ classdef Layers
             return
         end
     end 
+    
 end

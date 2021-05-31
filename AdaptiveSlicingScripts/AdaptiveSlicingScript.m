@@ -96,7 +96,9 @@ saveas(figure(1), 'model2', 'bmp');
 model = Model(n_elements, n_nodes, pointArray, triangleArray);
 
 slicedModel = AdaptiveSlicing(model, increments, thicknessArray, angleArray);
-slicedModel.plotLayers(2);
+adaptive = slicedModel;
+slicedModel.plotLayers(4);
+
 
 final = figure(4);
 patch(data,'FaceColor',       [0.8 0.8 1.0], ...
@@ -109,6 +111,7 @@ material('dull');
 axis('image');
 view([-135 35]);
 saveas(final, 'final2', 'bmp');
+close all
 end
 
 % %% Parse file
