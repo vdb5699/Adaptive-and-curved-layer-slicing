@@ -1,4 +1,4 @@
-function [file, numberX, numberY, resolution] = FreeForm(file, numberX, numberY, resolution)
+function Layer = FreeForm(file, numberX, numberY, resolution)
 %% Bezier Surface Script
 %% Parse file
 % n_elements = xlsread('SimpleShape.xlsx',1,'A2');
@@ -101,5 +101,5 @@ Bx = P.Bx;
 By = P.By;
 Bz = P.Bz;
 %% create Bezier surface and display it
-B = BezierSurface(Bx,By,Bz,5); % resolution
+B = BezierSurface(Bx,By,Bz,resolution); % resolution
 Layer = newNewlayers(B,2,10,1);

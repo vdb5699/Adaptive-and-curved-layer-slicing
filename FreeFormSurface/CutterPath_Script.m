@@ -1,4 +1,4 @@
-function [file, numberX, numberY, numberPoints, numberPaths] = CurvedLayer(file, numberX, numberY, numberPoints, numberPaths)
+function Layer = CurvedLayer(file, numberX, numberY, numberPoints, numberPaths)
 %% Bezier Surface Script
 %% Parse file
 % n_elements = xlsread('SimpleShape.xlsx',1,'A2');

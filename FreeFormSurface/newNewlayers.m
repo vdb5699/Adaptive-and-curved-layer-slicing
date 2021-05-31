@@ -9,16 +9,7 @@ classdef newNewlayers
         Py;
         Pz;
         type;
-        
-        
-        %        BxRows;
-        %        BxCols;
-        %        ByRows;
-        %        ByCols;
-        %        BzRows;
-        %        BzCols;
-        %A;
-        %crossProdValue;
+        surfaces;
         
         
     end
@@ -29,11 +20,11 @@ classdef newNewlayers
             obj.Px = points.Px;
             obj.Py = points.Py;
             obj.Pz = points.Pz;
-            obj.thickness = 0.2;     %Need to get user input here
+            obj.thickness = thickness;     %Need to get user input here
             obj.type = type;
-            obj.numOfLayers = 5;
+            obj.numOfLayers = numOfLayers;
             %zPlusOne(obj, obj.Px,obj.Py, obj.Pz, obj.thickness);
-            LayerCoordinates(obj, obj.Px, obj.Py, obj.Pz, obj.thickness);
+            obj.surfaces = LayerCoordinates(obj, obj.Px, obj.Py, obj.Pz, obj.thickness);
         end
     end
     %% Adding 1 to Z value (Easy Way Out)
@@ -113,7 +104,7 @@ classdef newNewlayers
     end
     %% putting x,y,z values together in an array and calculating vectors
     methods (Access = public)
-        function V5 = LayerCoordinates(obj, Px, Py, Pz, thickness)
+        function surs = LayerCoordinates(obj, Px, Py, Pz, thickness)
             Pxtemp = Px;
             Pytemp = Py;
             Pztemp = Pz;
@@ -136,6 +127,7 @@ classdef newNewlayers
                 zlabel('Z-Axis');
                 hold on;
             end
+            surs(1) = Surface(Px,Py,Pz);
             for layers = 1:obj.numOfLayers
                 Px1 = Pxtemp;
                 Py1 = Pytemp;
@@ -234,8 +226,11 @@ classdef newNewlayers
                     end
                     figure(11);
                     plot3(Pxtemp, Pytemp, Pztemp);
+                   
                 end
+                surs(layers+1) = Surface(Pxtemp,Pytemp,Pztemp);
             end
+            return
         end
     end
     
@@ -269,6 +264,16 @@ classdef newNewlayers
             V5 = frac1*frac2;
             return
         end
-    end 
+        
+        function r = returninfo(obj)
+            r = [];
+            
+            for i = 1 : width(obj.surfaces)
+                b = [obj.surfaces.Px; obj.surfaces.Py; obj.surfaces.Pz];
+                r = [r b];
+            end
+            return;
+        end
+    end
     
 end
