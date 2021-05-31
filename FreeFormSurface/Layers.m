@@ -29,9 +29,9 @@ classdef Layers
             obj.Px = points.Px;
             obj.Py = points.Py;
             obj.Pz = points.Pz;
-            obj.thickness = 0.2;     %Need to get user input here
+            obj.thickness = thickness;     %Need to get user input here
             obj.type = type;
-            obj.numOfLayers = 5;
+            obj.numOfLayers = numOfLayers;
             %zPlusOne(obj, obj.Px,obj.Py, obj.Pz, obj.thickness);
             LayerCoordinates(obj, obj.Px, obj.Py, obj.Pz, obj.thickness);
         end
@@ -155,7 +155,6 @@ classdef Layers
                 zlabel('Z-Axis');
                 hold on;
             end
-            
             for layers = 1:obj.numOfLayers
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -216,19 +215,15 @@ classdef Layers
                         B = [Px(row,col) Py(row,col) Pz(row,col)]; %Point1
                         if col ~= 1 %previous P-coordinates
                             A = [Px(row,(col-1)) Py(row,(col-1)) Pz(row,(col-1))];   %Point2
-                        else 
-                            A = B;
                         end
                         if col ~= width(Px) %next P-coordinates
                             C = [Px(row,(col+1)) Py(row,(col+1)) Pz(row,(col+1))];   %Point3
-                        else 
-                            C = B;
                         end
                         
                         if col == 1
-                           a1 = -C(1);
+                            a1 = -C(1);
                            A = [a1 B(2) C(3)];
-                           %A = B;
+                           %A = B
                         end
                         
                         if col == width(Px)
@@ -237,10 +232,9 @@ classdef Layers
                            %C = B;
                         end
                          
-                            V1 = [A(1)-B(1) A(2)-B(2) A(3)-B(3)];
-                            V2 = [C(1)-B(1) C(2)-B(2) C(3)-B(3)];
+                            V1 = B - A;
+                            V2 = B - C;
                             V3 = cross(V1, V2);
-<<<<<<< Updated upstream
 %                             if V3(1) == 0 && V3(2) == 0 && V3(3) == 0
 %                                V3 = [0 1 0];
 %                             end
@@ -289,29 +283,6 @@ classdef Layers
                         Pytemp(row,col) = Py1(row,col) + V5(2);
                         Pztemp(row,col) = Pz1(row,col) + V5(3);
 >>>>>>> b10c407930c0fdcec9df837515cc2807c07439c8
-=======
-                            if V3(1) == 0 && V3(2) == 0 && V3(3) == 0
-                                V3 = [0 1 0];  
-                            end
-                            V1crossV3 = cross(V1, V3);
-                            V3crossV2 = cross(V3,V2);
-                            magnitude = vectorMag(obj,V1crossV3);%Calculating magnitude of V3
-                            V13 = thickness * (V1crossV3/magnitude);%Unit Vector
-                            magnitude2 = vectorMag(obj,V3crossV2);%Calculating magnitude of V3crossV2
-                            V23 = thickness * (V3crossV2/magnitude2);%Unit Vector
-                            alpha = vectorAng(obj, V13,V23);
-                            V5 = calcV5(obj,thickness,V13,V23,alpha);
-                        if col == 1 || col == width(Px) || row == 1 || row  == width(Px)
-                            Pxtemp(row,col) = Px1(row,col) - V5(1);
-                            Pytemp(row,col) = Py1(row,col) - V5(2);
-                            Pztemp(row,col) = Pz1(row,col) - V5(3);
-                        else
-                            Pxtemp(row,col) = Px1(row,col) + V5(1);
-                            Pytemp(row,col) = Py1(row,col) + V5(2);
-                            Pztemp(row,col) = Pz1(row,col) + V5(3);
-                        end
-                        
->>>>>>> Stashed changes
                     end
                 end
                 
