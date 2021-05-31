@@ -113,32 +113,42 @@ classdef Layers
                         if col ~= width(Px) %next P-coordinates
                             C = [Px(row,(col+1)) Py(row,(col+1)) Pz(row,(col+1))];   %Point3
                         end
+                        
+                        if col == 1
+                            a1 = -C(1);
+                           A = [a1 B(2) C(3)];
+                           %A = B
+                        end
+                        
+                        if col == width(Px)
+                           c1 = (B(1)+(B(1)-A(1)));
+                           C = [c1 B(2)  A(3)]; 
+                           %C = B;
+                        end
                          
-                        if col ~= 1 && col ~= width(Px)
                             V1 = B - A;
                             V2 = B - C;
-                            V3 = cross(V2, V1);
+                            V3 = cross(V1, V2);
+%                             if V3(1) == 0 && V3(2) == 0 && V3(3) == 0
+%                                V3 = [0 1 0];
+%                             end
                             V1crossV3 = cross(V1, V3);
                             V3crossV2 = cross(V3,V2);
                             magnitude = vectorMag(obj,V1crossV3);                  %Calculating magnitude of V3
                             V13 = thickness * (V1crossV3/magnitude);   %Unit Vector
+
                             magnitude2 = vectorMag(obj,V3crossV2);           %Calculating magnitude of V3crossV2
                             V23 = thickness * (V3crossV2/magnitude2);   %Unit Vector
+
                             alpha = vectorAng(obj, V13,V23);
                             V5 = calcV5(obj,thickness,V13,V23,alpha);
-                        elseif col == 1
-                            V3 = B - C;
-                            magnitude = vectorMag(obj,V3);
-                            V13 = thickness * (V3/magnitude);
-                            alpha = acos(V13/magnitude);
-                            V5 = (thickness/cos(alpha/2))*(V13/magnitude);
-                        else
-                            V3 = B - A;
-                            magnitude = vectorMag(obj,V3);
-                            V13 = thickness * (V3/magnitude);
-                            alpha = acos(V13/magnitude);
-                            V5 = (thickness/cos(alpha/2))*(V13/magnitude);
-                        end
+                            
+%                             if isnan(V5)
+%                                 
+%                                 V5 = [0 0 thickness];
+%                             end
+
+  
                         Pxtemp(row,col) = Px1(row,col) + V5(1);
                         Pytemp(row,col) = Py1(row,col) + V5(2);
                         Pztemp(row,col) = Pz1(row,col) + V5(3);
