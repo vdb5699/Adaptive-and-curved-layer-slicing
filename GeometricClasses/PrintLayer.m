@@ -30,7 +30,7 @@ classdef PrintLayer
             end
             r.layerWidth = layerW;
         end
-        
+  
         function r = fill3Layer(obj)
             %%Top layer
             for i = 1 : height(obj.topLayerPoints)
@@ -69,11 +69,6 @@ classdef PrintLayer
             hold on
             fill3(XPU,YPU,ZPU, 'y')
             hold on
-            
-%             for(i = 1:height(obj.topLayerPoints)-1)
-%                 patch(XPA((4*i)-3:(4*i)),YPA((4*i)-3:(4*i)),ZPA((4*i)-3:(4*i)), 'r')
-%                 hold on
-%             end
         end
         
         function r = plot3Layer(obj)
@@ -120,13 +115,14 @@ classdef PrintLayer
         function r = sortLayerVertices(layerPointArray)
             
             LPA = layerPointArray';
+            LPA = PrintLayer.removeTriplePoints(LPA);
             LPA = PrintLayer.removeDuplicatePoints(LPA);
             LPA = PrintLayer.removeAdjacentPoints(LPA);
             %%Add the first point to the array
             orderedArray(1) = LPA(1);
             LPA(1) = [];
             
-            while(width(LPA) > 0)
+            while(width(LPA) > 0 )
                 
                 %%Find the matching index
                 for(i = 1 : width(LPA))
@@ -144,7 +140,15 @@ classdef PrintLayer
                     for i = 1: width(LPA)
                         %%Collect all identical points
                         currentPoint = LPA(i);
-                        if(currentPoint.isEqual(orderedArray(width(orderedArray))))
+                        p1x = round(currentPoint.x *10000)/10000;
+                        p1y = round(currentPoint.y *10000)/10000;
+                        p1z = round(currentPoint.z *10000)/10000;
+                        p2x = round(orderedArray(width(orderedArray)).x *10000)/10000;
+                        p2y = round(orderedArray(width(orderedArray)).y *10000)/10000;
+                        p2z = round(orderedArray(width(orderedArray)).z *10000)/10000;
+                        point1 = Point(p1x,p1y,p1z);
+                        point2 = Point(p2x,p2y,p2z);
+                        if(point1.isEqual(point2))
                             %%Add the current point to the list
                             orderedArray(width(orderedArray)+1) = currentPoint;
                             LPA(i) = [];
@@ -152,11 +156,85 @@ classdef PrintLayer
                         end
                     end
                 end
+                if(orderedArray(1).isEqual(orderedArray(width(orderedArray))))
+                    break;
+                end
             end
             r = orderedArray;
         end
         
-        
+        function r = removeTriplePoints(pointArray)
+            
+            PA = pointArray;
+            %%Sort the points by ID
+            [~,ind] = sort([PA.id]);
+            sortedPoints = PA(ind); 
+
+            
+            %%Check each ID for triple points and remove if necessary
+            toRemove = [];
+            for(i = 1:width(sortedPoints)-2)
+                 if(sortedPoints(i).id == sortedPoints(i+1).id && sortedPoints(i+1).id == sortedPoints(i+2).id)
+                   %%Find duplicate points
+                   point1 = sortedPoints(i);
+                   point2 = sortedPoints(i+1);
+                   point3 = sortedPoints(i+2);
+                   if(point1.isEqual(point2) && ~point1.isEqual(point3))
+                        toRemove = [toRemove; i];
+                   elseif(point1.isEqual(point3) && ~point1.isEqual(point2))
+                        toRemove = [toRemove; i];
+                   elseif(point2.isEqual(point3) && ~point2.isEqual(point1))
+                        toRemove = [toRemove; i+1];
+                   end
+                end
+            end
+
+            %%Check if all points will be removed
+            if(height(toRemove) == width(sortedPoints))
+                r = sortedPoints(1);
+                return;
+            end
+            if(height(toRemove) ~= 0 && width(toRemove) ~= 0)
+                removed1 = sortedPoints(toRemove(1)); 
+                removed2 = sortedPoints(toRemove(2));
+                %%Remove points and return 
+                sortedPoints(toRemove) = [];
+                match1 = [];
+                match2 = [];
+                %%Find the duplicate point
+                for i = 1:width(sortedPoints)
+                    if(removed1.isEqual(sortedPoints(i)))
+                        match1 = [match1; sortedPoints(i)];
+                    end
+                    if(removed2.isEqual(sortedPoints(i)))
+                        match2 = [match2; sortedPoints(i)];
+                    end
+                end
+                
+                for i = 1:height(match1)
+                    searchId = match1(i).id;
+                    for(j = 1:height(match2))
+                        if(searchId == match2(j).id)
+                            break;
+                        end
+                    end
+                end
+                
+                %%Loop through and remove specified ID
+                for(i = 1:width(sortedPoints))
+                    if(searchId == sortedPoints(i).id)
+                        sortedPoints(i+1) = [];
+                        sortedPoints(i) = [];
+                        break;
+                    end
+                end
+                
+            else
+                sortedPoints(toRemove) = [];
+            end
+            r = sortedPoints;
+            return;
+        end
         
         function r = removeDuplicatePoints(pointArray)
             
@@ -169,7 +247,15 @@ classdef PrintLayer
             %%Check each ID for double points and remove if necessary
             toRemove = [];
             for(i = 1:width(sortedPoints)/2)
-                 if(sortedPoints((2*i)-1).isEqual(sortedPoints(2*i)))
+                p1x = round(sortedPoints((2*i)-1).x *10000)/10000;
+                p1y = round(sortedPoints((2*i)-1).y *10000)/10000;
+                p1z = round(sortedPoints((2*i)-1).z *10000)/10000;
+                p2x = round(sortedPoints((2*i)).x *10000)/10000;
+                p2y = round(sortedPoints((2*i)).y *10000)/10000;
+                p2z = round(sortedPoints((2*i)).z *10000)/10000;
+                point1 = Point(p1x,p1y,p1z);
+                point2 = Point(p2x,p2y,p2z);
+                 if(point1.isEqual(point2))
                     toRemove = [toRemove;(2*i)-1;(2*i)];
                 end
             end

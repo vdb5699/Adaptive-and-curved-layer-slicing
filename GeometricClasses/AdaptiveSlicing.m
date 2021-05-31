@@ -2,9 +2,9 @@ classdef AdaptiveSlicing
     
     properties
         slicedLayers %%An array of adaptively sliced layers
-        thicknessArray
-        angleArray
-        increments
+        thicknessArray%%An array holding the thickness ranges for the layers
+        angleArray%%An array holding the corresponding angle ranges for the layers
+        increments%%Ascaling factor for the layers
     end
     
     methods
@@ -39,7 +39,17 @@ classdef AdaptiveSlicing
             for i = 1 : height(triangleArray)
                 currentTriangle = triangleArray(i);
                 if(currentTriangle.isIntersected(currentHeight))
-                    intersectedTri = [intersectedTri; currentTriangle];
+                    if(currentHeight == 0)
+                        p1 = currentTriangle.point1;
+                        p2 = currentTriangle.point2;
+                        p3 = currentTriangle.point3;
+                        if(p1.z == 0 && p2.z == 0 && p3.z == 0)
+                        else
+                            intersectedTri = [intersectedTri; currentTriangle];
+                        end
+                    else
+                        intersectedTri = [intersectedTri; currentTriangle];
+                    end
                 end
             end
             
