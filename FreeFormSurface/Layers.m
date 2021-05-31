@@ -273,10 +273,7 @@ classdef Layers
                             alpha = vectorAng(obj, V13,V23);
                             V5 = calcV5(obj,thickness,V13,V23,alpha);
                             
-%                             if isnan(V5)
-%                                 
-%                                 V5 = [0 0 thickness];
-%                             end
+
 
   
                         Pxtemp(row,col) = Px1(row,col) + V5(1);
