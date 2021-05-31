@@ -97,3 +97,4 @@ Bx = P.Bx;
 By = P.By;
 Bz = P.Bz;
 C = CutterPath(Bx,By,Bz,numberPoints,numberPaths); % number of points, number of paths
+Layer = Layers(C,0.5,10,2);
