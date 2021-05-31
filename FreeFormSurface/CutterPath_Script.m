@@ -1,4 +1,4 @@
-function Layer = CurvedLayer(file, numberX, numberY, numberPoints, numberPaths)
+function Layer = CurvedLayer(file, numberX, numberY, numberPoints, numberPaths, numLayers, layerThickness)
 %% Bezier Surface Script
 %% Parse file
 % n_elements = xlsread('SimpleShape.xlsx',1,'A2');
@@ -97,4 +97,6 @@ Bx = P.Bx;
 By = P.By;
 Bz = P.Bz;
 C = CutterPath(Bx,By,Bz,numberPoints,numberPaths); % number of points, number of paths
-Layer = newNewlayers(C,0.5,10,2);
+Layer2 = newNewlayers2(C,layerThickness,numLayers,2);
+Layer = Layer2.returninfo();
+close all;

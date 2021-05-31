@@ -1,4 +1,4 @@
-classdef newNewlayers
+classdef newNewlayers2
     properties (Access = public)
         Bx;
         By;
@@ -15,7 +15,7 @@ classdef newNewlayers
     end
     %% constructor
     methods(Access = public)
-        function obj = newNewlayers(surface, thickness, numOfLayers, type)
+        function obj = newNewlayers2(surface, thickness, numOfLayers, type)
             points = surface.data;
             obj.Px = points.Px;
             obj.Py = points.Py;
@@ -266,12 +266,14 @@ classdef newNewlayers
         end
         
         function r = returninfo(obj)
-            r = [];
+            surface = [];
             
             for i = 1 : width(obj.surfaces)
-                b = [obj.surfaces.Px; obj.surfaces.Py; obj.surfaces.Pz];
-                r = [r b];
+                b = [obj.surfaces(i).Px; obj.surfaces(i).Py; obj.surfaces(i).Pz];
+                surface = [surface b];
+                b = [];
             end
+            r = surface;
             return;
         end
     end
