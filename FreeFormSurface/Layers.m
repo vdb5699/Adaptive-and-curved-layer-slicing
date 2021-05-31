@@ -108,29 +108,40 @@ classdef Layers
                     for col=1:width(Px)
                         B = [Px(row,col) Py(row,col) Pz(row,col)]; %Point1
                         if col ~= 1 %previous P-coordinates
-                            A = [Px(row,(col-1)) Py(row,(col-1)) (Pz(row,col-1))];   %Point2
-                        else
-                            A = B;
+                            A = [Px(row,(col-1)) Py(row,(col-1)) Pz(row,(col-1))];   %Point2
                         end
                         if col ~= width(Px) %next P-coordinates
                             C = [Px(row,(col+1)) Py(row,(col+1)) Pz(row,(col+1))];   %Point3
-                         else
-                             C = B;
-                        end 
-                        V1 = A - B;
-                        V2 = C - B;
-                        V3 = cross(V2, V1);
-                        V1crossV3 = cross(V1, V3);
-                        V3crossV2 = cross(V3,V2);
-                        magnitude = vectorMag(obj,V1crossV3);                  %Calculating magnitude of V3
-                        V13 = thickness * (V1crossV3/magnitude);   %Unit Vector
-                        magnitude2 = vectorMag(obj,V3crossV2);           %Calculating magnitude of V3crossV2
-                        V23 = thickness * (V3crossV2/magnitude2);   %Unit Vector
-                        alpha = vectorAng(obj, V13,V23);
-                        V5 = calcV5(obj,thickness,V13,V23,alpha);
-                        Pxtemp(row,col) = Px1(row,col) - V5(1);
-                        Pytemp(row,col) = Py1(row,col) - V5(2);
-                        Pztemp(row,col) = Pz1(row,col) - V5(3);
+                        end
+                         
+                        if col ~= 1 && col ~= width(Px)
+                            V1 = B - A;
+                            V2 = B - C;
+                            V3 = cross(V2, V1);
+                            V1crossV3 = cross(V1, V3);
+                            V3crossV2 = cross(V3,V2);
+                            magnitude = vectorMag(obj,V1crossV3);                  %Calculating magnitude of V3
+                            V13 = thickness * (V1crossV3/magnitude);   %Unit Vector
+                            magnitude2 = vectorMag(obj,V3crossV2);           %Calculating magnitude of V3crossV2
+                            V23 = thickness * (V3crossV2/magnitude2);   %Unit Vector
+                            alpha = vectorAng(obj, V13,V23);
+                            V5 = calcV5(obj,thickness,V13,V23,alpha);
+                        elseif col == 1
+                            V3 = B - C;
+                            magnitude = vectorMag(obj,V3);
+                            V13 = thickness * (V3/magnitude);
+                            alpha = acos(V13/magnitude);
+                            V5 = (thickness/cos(alpha/2))*(V13/magnitude);
+                        else
+                            V3 = B - A;
+                            magnitude = vectorMag(obj,V3);
+                            V13 = thickness * (V3/magnitude);
+                            alpha = acos(V13/magnitude);
+                            V5 = (thickness/cos(alpha/2))*(V13/magnitude);
+                        end
+                        Pxtemp(row,col) = Px1(row,col) + V5(1);
+                        Pytemp(row,col) = Py1(row,col) + V5(2);
+                        Pztemp(row,col) = Pz1(row,col) + V5(3);
                     end
                 end
             
