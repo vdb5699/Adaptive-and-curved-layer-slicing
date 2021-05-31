@@ -101,5 +101,5 @@ Bx = P.Bx;
 By = P.By;
 Bz = P.Bz;
 %% create Bezier surface and display it
-B = BezierSurface(Bx,By,Bz,resolution); % resolution
+B = BezierSurface(Bx,By,Bz,5); % resolution
 Layer = Layers(B,2,10,1);
