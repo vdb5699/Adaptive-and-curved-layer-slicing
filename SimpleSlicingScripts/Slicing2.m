@@ -55,7 +55,7 @@ for i=1:n_nodes
 end
 
 % slicing parameters
-INC = str2double(increments); % number of slices
+INC = increments; % number of slices
 NOSTEP = zmax/INC;
 zs = zmin; % starting height
 

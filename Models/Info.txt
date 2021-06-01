@@ -1,0 +1,3 @@
+Models used for adaptive slicing = Pyramid, Cube, AngleChange, ProtudingPart, House, Cone
+Models used for curved layer slicing = Pyramid, Cube, Crater, Temple, Cylinder
+Models not used = NOTUSED folder

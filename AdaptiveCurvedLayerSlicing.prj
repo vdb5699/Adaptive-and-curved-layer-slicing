@@ -1,0 +1,83 @@
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration build-checksum="3711454652" file="C:\Users\cbrow\Documents\GitHub\Adaptive-and-curved-layer-slicing\AdaptiveCurvedLayerSlicing.prj" location="C:\Users\cbrow\Documents\GitHub\Adaptive-and-curved-layer-slicing" name="AdaptiveCurvedLayerSlicing" target="target.mlapps" target-name="Package App">
+    <param.appname>AdaptiveCurvedLayerSlicing</param.appname>
+    <param.authnamewatermark>Charlie Cho (cbrown3010)</param.authnamewatermark>
+    <param.email />
+    <param.company />
+    <param.icon />
+    <param.icons />
+    <param.summary>- Adaptive and Curved Layer slicing for additive manufacturing
+- Written by Charlie Cho (github: cbrown3010)</param.summary>
+    <param.description>- Adaptive and Curved Layer slicing for additive manufacturing
+- Written by Charlie Cho (github: cbrown3010)</param.description>
+    <param.screenshot>C:\Users\cbrow\AppData\Local\Temp\tp3615780b_df97_44ac_906a_d132e4c5f1cd.png</param.screenshot>
+    <param.version>1.0</param.version>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.output>C:\Users\cbrow\Desktop</param.output>
+    <param.guid>1932a65e-4c05-4efd-a7b5-77b515efecee</param.guid>
+    <unset>
+      <param.email />
+      <param.company />
+      <param.icon />
+      <param.icons />
+      <param.version />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\Main.mlapp</file>
+    </fileset.main>
+    <fileset.depfun>
+      <file>${PROJECT_ROOT}\AdaptiveParameters.xlsx</file>
+      <file>${PROJECT_ROOT}\AdaptiveSlicingScripts\AdaptiveSlicingScript.m</file>
+      <file>${PROJECT_ROOT}\FreeFormSurface\BezierSurface.m</file>
+      <file>${PROJECT_ROOT}\FreeFormSurface\CutterPath.m</file>
+      <file>${PROJECT_ROOT}\FreeFormSurface\CutterPath_Script.m</file>
+      <file>${PROJECT_ROOT}\FreeFormSurface\FFS_Script.m</file>
+      <file>${PROJECT_ROOT}\FreeFormSurface\newNewlayers2.m</file>
+      <file>${PROJECT_ROOT}\FreeFormSurface\NMmat.m</file>
+      <file>${PROJECT_ROOT}\FreeFormSurface\Points.m</file>
+      <file>${PROJECT_ROOT}\FreeFormSurface\STL2Points.m</file>
+      <file>${PROJECT_ROOT}\FreeFormSurface\Surface.m</file>
+      <file>${PROJECT_ROOT}\GeometricClasses\AdaptiveSlicing.m</file>
+      <file>${PROJECT_ROOT}\GeometricClasses\HelperMethods.m</file>
+      <file>${PROJECT_ROOT}\GeometricClasses\LayerPoint.m</file>
+      <file>${PROJECT_ROOT}\GeometricClasses\Model.m</file>
+      <file>${PROJECT_ROOT}\GeometricClasses\Point.m</file>
+      <file>${PROJECT_ROOT}\GeometricClasses\PrintLayer.m</file>
+      <file>${PROJECT_ROOT}\GeometricClasses\TriangularElement.m</file>
+      <file>${PROJECT_ROOT}\SimpleSlicingScripts\Slicing2.m</file>
+      <file>${PROJECT_ROOT}\STLread\stlread.m</file>
+    </fileset.depfun>
+    <fileset.resources />
+    <fileset.package />
+    <build-deliverables>
+      <file location="C:\Users\cbrow" name="Desktop" optional="false">C:\Users\cbrow\Desktop</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2020b</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
