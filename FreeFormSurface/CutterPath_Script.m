@@ -99,4 +99,4 @@ Bz = P.Bz;
 C = CutterPath(Bx,By,Bz,numberPoints,numberPaths); % number of points, number of paths
 Layer2 = newNewlayers2(C,layerThickness,numLayers,2);
 Layer = Layer2.returninfo();
-close all;
+%%close all;

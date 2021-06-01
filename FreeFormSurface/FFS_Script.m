@@ -104,4 +104,4 @@ Bz = P.Bz;
 B = BezierSurface(Bx,By,Bz,resolution); % resolution
 Layer2 = newNewlayers2(B,layerThickness,numLayers,1);
 Layer = Layer2.returninfo();
-close all;
+%close all;
