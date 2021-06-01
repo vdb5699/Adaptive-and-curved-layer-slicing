@@ -4,6 +4,7 @@ classdef AdaptiveSlicing
         slicedLayers %%An array of adaptively sliced layers
         thicknessArray%%An array holding the thickness ranges for the layers
         angleArray%%An array holding the corresponding angle ranges for the layers
+        residueArray %% An array holding residue height ranges for layers
         increments%%Ascaling factor for the layers
     end
     
@@ -24,14 +25,15 @@ classdef AdaptiveSlicing
                 r = outputArray;
         end
         
-        function r = AdaptiveSlicing(model, increments, thicknessArray, angleArray)
-            r.slicedLayers = r.SliceModel(model, increments, thicknessArray, angleArray);
+        function r = AdaptiveSlicing(model, increments, thicknessArray, angleArray, residueArray)
+            r.slicedLayers = r.SliceModel(model, increments, thicknessArray, angleArray, residueArray);
             r.thicknessArray = thicknessArray;
             r.angleArray = angleArray;
+            r.residueArray = residueArray;
             r.increments = increments;
         end
         
-        function r = getRecommendedSliceThickness(obj,triangleArray, currentHeight, thicknessIndex, thicknessArray, angleArray)
+        function r = getRecommendedSliceThickness(obj,triangleArray, currentHeight, thicknessIndex, thicknessArray, angleArray, residueArray)
             
             %% 1. Determine maximum thickness based on the residual height of the intersected triangles
             %% Find the triangles intersected by the current height
@@ -76,7 +78,7 @@ classdef AdaptiveSlicing
             
             %%Calculate the minimum residual and get the maximum thickness in mm
             minimumResidual = minimumHeight-currentHeight;
-            residualThickness = HelperMethods.GetResidualLayerThickness(minimumResidual);
+            residualThickness = HelperMethods.GetResidualLayerThickness(minimumResidual, thicknessArray, residueArray);
             
             %%2. Determine the maximum thickness based on the minimum angle of the intersected elements
             
@@ -199,7 +201,7 @@ classdef AdaptiveSlicing
             
         end
         
-        function r = SliceModel(obj, model, increments, thicknessArray, angleArray)
+        function r = SliceModel(obj, model, increments, thicknessArray, angleArray, residueArray)
             
             %%Initialise variables
             currentHeight = 0;
@@ -210,6 +212,7 @@ classdef AdaptiveSlicing
             thicknessIndex = 4;
             thicknessArr = cell2mat(thicknessArray);
             angleArr = angleArray;
+            residueArr = residueArray;
             
             triangleArray = newModel.triangularElementArray;
             for i=1:model.nodesNumber
@@ -221,7 +224,7 @@ classdef AdaptiveSlicing
             %%Create layers
             while (currentHeight < zMax)
                 %%Get the adaptive slice thickness
-                currentSliceThickness = obj.getRecommendedSliceThickness(triangleArray, currentHeight, thicknessIndex, thicknessArr, angleArr);
+                currentSliceThickness = obj.getRecommendedSliceThickness(triangleArray, currentHeight, thicknessIndex, thicknessArr, angleArr, residueArr);
                 %%Get the layer from the slice
                 newLayer = obj.getLayer(triangleArray, currentHeight, currentSliceThickness, zMax);
                 %%Update all values

@@ -1,4 +1,4 @@
-function adaptive = adaptiveSlicing(file, increments, thicknessArray, angleArray)
+function adaptive = adaptiveSlicing(file, increments, thicknessArray, angleArray, residueArray)
 %% Parse file
 data = stlread(file);
 dataSize =size(data.faces);
@@ -92,7 +92,7 @@ saveas(figure(1), 'model2', 'bmp');
 % Save all variables to model
 model = Model(n_elements, n_nodes, pointArray, triangleArray);
 % Slice layers
-slicedModel = AdaptiveSlicing(model, increments, thicknessArray, angleArray);
+slicedModel = AdaptiveSlicing(model, increments, thicknessArray, angleArray, residueArray);
 % save output to return model
 adaptive = slicedModel;
 % Plot layers

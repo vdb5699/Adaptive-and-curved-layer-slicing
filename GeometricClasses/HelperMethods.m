@@ -78,20 +78,19 @@ classdef HelperMethods
             end
         end
         
-        function r = GetResidualLayerThickness(minimumResidual)
-            
-            % values temporary changed so angle has more influence
-             if(minimumResidual >=0 && minimumResidual < 0.2)
-                r = 1; %0.1
+        function r = GetResidualLayerThickness(minimumResidual, thicknessArray, residueArray)
+            residueArray = cell2mat(residueArray);
+            if(minimumResidual >= residueArray(1) && minimumResidual < residueArray(2))
+                r = thicknessArray(2); 
                 return; 
-            elseif(minimumResidual >=0.2 && minimumResidual < 0.5)    
-                r = 2; %0.2
+            elseif(minimumResidual >= residueArray(2) && minimumResidual < residueArray(3))    
+                r = thicknessArray(3); 
                 return;
-            elseif(minimumResidual >=0.5 && minimumResidual < 1)
-                r = 5; %0.5
+            elseif(minimumResidual >= residueArray(3) && minimumResidual < residueArray(4))
+                r = thicknessArray(4);
                 return;
-            elseif(minimumResidual >= 1 && minimumResidual <= Inf)    
-                r = 10; %1
+            elseif(minimumResidual >= residueArray(4) && minimumResidual <= residueArray(5))    
+                r = thicknessArray(5);
                 return;
             else
                 r = -1;
